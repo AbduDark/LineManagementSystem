@@ -8,12 +8,12 @@
         Title="{Binding Provider, StringFormat='مجموعات {0}'}"
         Height="600" Width="1000"
         WindowStartupLocation="CenterScreen"
-        FlowDirection="RightToLeft"
-        Background="#F5F5F5">
+        FlowDirection="RightToLeft">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <local:ProviderToLogoConverter x:Key="ProviderToLogoConverter"/>
+        <local:ProviderToColorConverter x:Key="ProviderToColorConverter"/>
         <Style x:Key="ActionButton" TargetType="Button">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="15,8"/>
@@ -36,48 +36,58 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Margin="0,0,0,20">
-            <Image DockPanel.Dock="Left" 
-                   Source="{Binding Provider, Converter={StaticResource ProviderToLogoConverter}}" 
-                   Width="80" 
-                   Height="80"
-                   Margin="0,0,20,0"
-                   VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding Provider, StringFormat='إدارة مجموعات {0}'}"
-                       FontSize="28"
-                       FontWeight="Bold"
+        <Border Grid.Row="0" 
+                Background="{Binding Provider, Converter={StaticResource ProviderToColorConverter}}"
+                Padding="20">
+            <DockPanel>
+                <Image DockPanel.Dock="Left" 
+                       Source="{Binding Provider, Converter={StaticResource ProviderToLogoConverter}}" 
+                       Width="80" 
+                       Height="80"
+                       Margin="0,0,20,0"
                        VerticalAlignment="Center"/>
-        </DockPanel>
+                <TextBlock Text="{Binding Provider, StringFormat='إدارة مجموعات {0}'}"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+            </DockPanel>
+        </Border>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
-            <Button Content="+ إضافة مجموعة جديدة"
-                    Style="{StaticResource ActionButton}"
-                    Background="#4CAF50"
-                    Command="{Binding AddGroupCommand}"/>
-            <Button Content="تعديل المجموعة"
-                    Style="{StaticResource ActionButton}"
-                    Background="#2196F3"
-                    Command="{Binding EditGroupCommand}"/>
-            <Button Content="حذف المجموعة"
-                    Style="{StaticResource ActionButton}"
-                    Background="#F44336"
-                    Command="{Binding DeleteGroupCommand}"/>
-            <Button Content="تجديد الصلاحية (60 يوم)"
-                    Style="{StaticResource ActionButton}"
-                    Background="#FF9800"
-                    Command="{Binding RenewLicenseCommand}"/>
-            <Button Content="عرض التفاصيل والخطوط"
-                    Style="{StaticResource ActionButton}"
-                    Background="#9C27B0"
-                    Command="{Binding ViewGroupDetailsCommand}"/>
-        </StackPanel>
+        <Border Grid.Row="1" Margin="20,20,20,20" Background="White" Padding="10">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" Opacity="0.1" BlurRadius="5" ShadowDepth="2"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="+ إضافة مجموعة جديدة"
+                        Style="{StaticResource ActionButton}"
+                        Background="#4CAF50"
+                        Command="{Binding AddGroupCommand}"/>
+                <Button Content="تعديل المجموعة"
+                        Style="{StaticResource ActionButton}"
+                        Background="#2196F3"
+                        Command="{Binding EditGroupCommand}"/>
+                <Button Content="حذف المجموعة"
+                        Style="{StaticResource ActionButton}"
+                        Background="#F44336"
+                        Command="{Binding DeleteGroupCommand}"/>
+                <Button Content="تجديد الصلاحية (60 يوم)"
+                        Style="{StaticResource ActionButton}"
+                        Background="#FF9800"
+                        Command="{Binding RenewLicenseCommand}"/>
+                <Button Content="عرض التفاصيل والخطوط"
+                        Style="{StaticResource ActionButton}"
+                        Background="#9C27B0"
+                        Command="{Binding ViewGroupDetailsCommand}"/>
+            </StackPanel>
+        </Border>
 
         <DataGrid Grid.Row="2"
                   ItemsSource="{Binding Groups}"
@@ -89,7 +99,8 @@
                   BorderBrush="#DDD"
                   BorderThickness="1"
                   RowBackground="White"
-                  AlternatingRowBackground="#F9F9F9">
+                  AlternatingRowBackground="#F9F9F9"
+                  Margin="20,0,20,20">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="الشعار" Width="80">
                     <DataGridTemplateColumn.CellTemplate>

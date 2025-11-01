@@ -8,8 +8,7 @@
         Title="{Binding Group.Name, StringFormat='تفاصيل المجموعة: {0}'}"
         Height="700" Width="1200"
         WindowStartupLocation="CenterScreen"
-        FlowDirection="RightToLeft"
-        Background="#F5F5F5">
+        FlowDirection="RightToLeft">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -17,6 +16,7 @@
         <local:ConfirmationLevel1VisibilityConverter x:Key="ConfirmLevel1Vis"/>
         <local:ConfirmationLevel2VisibilityConverter x:Key="ConfirmLevel2Vis"/>
         <local:ConfirmationLevel3VisibilityConverter x:Key="ConfirmLevel3Vis"/>
+        <local:ProviderToColorConverter x:Key="ProviderToColorConverter"/>
         
         <Style x:Key="ActionButton" TargetType="Button">
             <Setter Property="Margin" Value="5"/>
@@ -81,7 +81,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -89,39 +89,48 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="{Binding Group.Name, StringFormat='المجموعة: {0}'}" 
-                       FontSize="28" FontWeight="Bold"/>
-            <TextBlock Text="{Binding Group.GetLineCount, StringFormat='عدد الخطوط: {0} من 50'}" 
-                       FontSize="16" Margin="0,5,0,0"/>
-        </StackPanel>
+        <Border Grid.Row="0" 
+                Background="{Binding Group.Provider, Converter={StaticResource ProviderToColorConverter}}"
+                Padding="20">
+            <StackPanel>
+                <TextBlock Text="{Binding Group.Name, StringFormat='المجموعة: {0}'}" 
+                           FontSize="32" FontWeight="Bold" Foreground="White"/>
+                <TextBlock Text="{Binding Group.GetLineCount, StringFormat='عدد الخطوط: {0} من 50'}" 
+                           FontSize="18" Margin="0,5,0,0" Foreground="White" FontWeight="SemiBold"/>
+            </StackPanel>
+        </Border>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
-            <Button Content="+ إضافة خط جديد"
-                    Style="{StaticResource ActionButton}"
-                    Background="#43A047"
-                    Command="{Binding AddLineCommand}">
-                <Button.Effect>
-                    <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
-                </Button.Effect>
-            </Button>
-            <Button Content="✏ تعديل الخط"
-                    Style="{StaticResource ActionButton}"
-                    Background="#1E88E5"
-                    Command="{Binding EditLineCommand}">
-                <Button.Effect>
-                    <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
-                </Button.Effect>
-            </Button>
-            <Button Content="🗑 حذف الخط"
-                    Style="{StaticResource ActionButton}"
-                    Background="#E53935"
-                    Command="{Binding DeleteLineCommand}">
-                <Button.Effect>
-                    <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
-                </Button.Effect>
-            </Button>
-        </StackPanel>
+        <Border Grid.Row="1" Margin="20,20,20,20" Background="White" Padding="10">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" Opacity="0.1" BlurRadius="5" ShadowDepth="2"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="+ إضافة خط جديد"
+                        Style="{StaticResource ActionButton}"
+                        Background="#43A047"
+                        Command="{Binding AddLineCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
+                    </Button.Effect>
+                </Button>
+                <Button Content="✏ تعديل الخط"
+                        Style="{StaticResource ActionButton}"
+                        Background="#1E88E5"
+                        Command="{Binding EditLineCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
+                    </Button.Effect>
+                </Button>
+                <Button Content="🗑 حذف الخط"
+                        Style="{StaticResource ActionButton}"
+                        Background="#E53935"
+                        Command="{Binding DeleteLineCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
+                    </Button.Effect>
+                </Button>
+            </StackPanel>
+        </Border>
 
         <Border Grid.Row="2" 
                 Background="White" 

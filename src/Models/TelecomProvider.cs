@@ -38,10 +38,10 @@ public static class TelecomProviderExtensions
     {
         return provider switch
         {
-            TelecomProvider.Vodafone => "/src/Resources/Images/vodafone.png",
-            TelecomProvider.Etisalat => "/src/Resources/Images/etisalat.png",
-            TelecomProvider.We => "/src/Resources/Images/we.png",
-            TelecomProvider.Orange => "/src/Resources/Images/orange.png",
+            TelecomProvider.Vodafone => "/Resources/Images/vodafone.png",
+            TelecomProvider.Etisalat => "/Resources/Images/etisalat.png",
+            TelecomProvider.We => "/Resources/Images/we.png",
+            TelecomProvider.Orange => "/Resources/Images/orange.png",
             _ => ""
         };
     }
