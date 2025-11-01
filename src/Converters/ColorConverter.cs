@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace LineManagementSystem.Converters;
 
-public class ColorConverter : IValueConverter
+public class HexToColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -12,7 +12,7 @@ public class ColorConverter : IValueConverter
         {
             try
             {
-                return (Color)ColorConverter.ConvertFromString(hexColor);
+                return (Color)System.Windows.Media.ColorConverter.ConvertFromString(hexColor);
             }
             catch
             {

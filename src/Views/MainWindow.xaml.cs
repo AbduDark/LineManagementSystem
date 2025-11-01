@@ -19,7 +19,7 @@ public partial class MainWindow : Window
         _dbContext = new DatabaseContext();
         _dbContext.EnsureCreated();
 
-        _alertService = new AlertService(_dbContext);
+        _alertService = new AlertService();
         _groupService = new GroupService(_dbContext);
 
         _viewModel = new MainViewModel(_alertService, _groupService);

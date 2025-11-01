@@ -6,15 +6,14 @@ namespace LineManagementSystem.Services;
 
 public class AlertService
 {
-    private readonly DatabaseContext _context;
     private System.Timers.Timer? _alertTimer;
 
     public ObservableCollection<Alert> ActiveAlerts { get; } = new();
 
-    public AlertService(DatabaseContext context)
+    public AlertService()
     {
-        _context = context;
         InitializeTimer();
+        CheckForAlerts();
     }
 
     private void InitializeTimer()
@@ -22,73 +21,34 @@ public class AlertService
         _alertTimer = new System.Timers.Timer(300000);
         _alertTimer.Elapsed += (s, e) => CheckForAlerts();
         _alertTimer.Start();
-        
-        CheckForAlerts();
     }
 
     public void CheckForAlerts()
     {
         try
         {
-            var groups = _context.LineGroups
+            using var context = new DatabaseContext();
+            
+            var groups = context.LineGroups
                 .Include(g => g.Lines)
                 .ToList();
 
-            var newAlerts = new List<Alert>();
-
             foreach (var group in groups)
             {
-                if (group.RequiresCashWallet && group.NeedsRenewalAlert())
-                {
-                    newAlerts.Add(new Alert
-                    {
-                        Type = AlertType.RenewalNeeded,
-                        GroupId = group.Id,
-                        Group = group,
-                        Message = $"تحتاج المجموعة '{group.Name}' للتجديد"
-                    });
-                }
-
-                if (group.RequiresCashWallet && group.IsRenewalExpired())
-                {
-                    newAlerts.Add(new Alert
-                    {
-                        Type = AlertType.RenewalExpired,
-                        GroupId = group.Id,
-                        Group = group,
-                        Message = $"صلاحية المجموعة '{group.Name}' منتهية"
-                    });
-                }
-
-                if (group.NeedsHandoverAlert())
-                {
-                    newAlerts.Add(new Alert
-                    {
-                        Type = AlertType.HandoverDue,
-                        GroupId = group.Id,
-                        Group = group,
-                        Message = $"موعد تسليم المجموعة '{group.Name}' قريب"
-                    });
-                }
-
-                if (group.IsHandoverOverdue())
-                {
-                    newAlerts.Add(new Alert
-                    {
-                        Type = AlertType.HandoverOverdue,
-                        GroupId = group.Id,
-                        Group = group,
-                        Message = $"تأخر تسليم المجموعة '{group.Name}'"
-                    });
-                }
+                CheckAndCreateAlert(context, group, AlertType.RenewalNeeded, 
+                    group.RequiresCashWallet && group.NeedsRenewalAlert());
+                    
+                CheckAndCreateAlert(context, group, AlertType.RenewalExpired, 
+                    group.RequiresCashWallet && group.IsRenewalExpired());
+                    
+                CheckAndCreateAlert(context, group, AlertType.HandoverDue, 
+                    group.NeedsHandoverAlert());
+                    
+                CheckAndCreateAlert(context, group, AlertType.HandoverOverdue, 
+                    group.IsHandoverOverdue());
             }
 
-            foreach (var alert in newAlerts)
-            {
-                _context.Alerts.Add(alert);
-            }
-            _context.SaveChanges();
-
+            context.SaveChanges();
             RefreshActiveAlerts();
         }
         catch (Exception ex)
@@ -97,9 +57,44 @@ public class AlertService
         }
     }
 
+    private void CheckAndCreateAlert(DatabaseContext context, LineGroup group, AlertType type, bool shouldAlert)
+    {
+        var existingAlert = context.Alerts
+            .FirstOrDefault(a => a.GroupId == group.Id && a.Type == type && !a.IsRead);
+
+        if (shouldAlert && existingAlert == null)
+        {
+            context.Alerts.Add(new Alert
+            {
+                Type = type,
+                GroupId = group.Id,
+                Message = GetAlertMessage(group, type),
+                CreatedAt = DateTime.Now,
+                IsRead = false
+            });
+        }
+        else if (!shouldAlert && existingAlert != null)
+        {
+            existingAlert.IsRead = true;
+        }
+    }
+
+    private string GetAlertMessage(LineGroup group, AlertType type)
+    {
+        return type switch
+        {
+            AlertType.RenewalNeeded => $"تحتاج المجموعة '{group.Name}' للتجديد",
+            AlertType.RenewalExpired => $"صلاحية المجموعة '{group.Name}' منتهية",
+            AlertType.HandoverDue => $"موعد تسليم المجموعة '{group.Name}' قريب",
+            AlertType.HandoverOverdue => $"تأخر تسليم المجموعة '{group.Name}'",
+            _ => ""
+        };
+    }
+
     public void RefreshActiveAlerts()
     {
-        var alerts = _context.Alerts
+        using var context = new DatabaseContext();
+        var alerts = context.Alerts
             .Include(a => a.Group)
             .Where(a => !a.IsRead)
             .OrderByDescending(a => a.CreatedAt)
@@ -117,23 +112,25 @@ public class AlertService
 
     public void MarkAsRead(int alertId)
     {
-        var alert = _context.Alerts.Find(alertId);
+        using var context = new DatabaseContext();
+        var alert = context.Alerts.Find(alertId);
         if (alert != null)
         {
             alert.IsRead = true;
-            _context.SaveChanges();
+            context.SaveChanges();
             RefreshActiveAlerts();
         }
     }
 
     public void ClearAllAlerts()
     {
-        var alerts = _context.Alerts.Where(a => !a.IsRead).ToList();
+        using var context = new DatabaseContext();
+        var alerts = context.Alerts.Where(a => !a.IsRead).ToList();
         foreach (var alert in alerts)
         {
             alert.IsRead = true;
         }
-        _context.SaveChanges();
+        context.SaveChanges();
         RefreshActiveAlerts();
     }
 }
