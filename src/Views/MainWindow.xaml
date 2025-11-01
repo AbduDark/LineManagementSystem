@@ -148,67 +148,39 @@
                 
                 <WrapPanel HorizontalAlignment="Center">
                     <Button Style="{StaticResource ProviderButton}" 
-                            Background="#E60000"
+                            Background="White"
                             Click="VodafoneButton_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Images/vodafone.png" 
-                                   Width="120" 
-                                   Height="120"
-                                   Margin="0,0,0,10"/>
-                            <TextBlock Text="فودافون" 
-                                      FontSize="20" 
-                                      FontWeight="Bold"
-                                      Foreground="White"
-                                      HorizontalAlignment="Center"/>
-                        </StackPanel>
+                        <Image Source="/src/Resources/Images/vodafone.png" 
+                               Width="180" 
+                               Height="180"
+                               Stretch="Uniform"/>
                     </Button>
 
                     <Button Style="{StaticResource ProviderButton}" 
-                            Background="#7FBA00"
+                            Background="White"
                             Click="EtisalatButton_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Images/etisalat.png" 
-                                   Width="120" 
-                                   Height="120"
-                                   Margin="0,0,0,10"/>
-                            <TextBlock Text="اتصالات" 
-                                      FontSize="20" 
-                                      FontWeight="Bold"
-                                      Foreground="White"
-                                      HorizontalAlignment="Center"/>
-                        </StackPanel>
+                        <Image Source="/src/Resources/Images/etisalat.png" 
+                               Width="180" 
+                               Height="180"
+                               Stretch="Uniform"/>
                     </Button>
 
                     <Button Style="{StaticResource ProviderButton}" 
-                            Background="#6A1B9A"
+                            Background="White"
                             Click="WeButton_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Images/we.png" 
-                                   Width="120" 
-                                   Height="120"
-                                   Margin="0,0,0,10"/>
-                            <TextBlock Text="وي" 
-                                      FontSize="20" 
-                                      FontWeight="Bold"
-                                      Foreground="White"
-                                      HorizontalAlignment="Center"/>
-                        </StackPanel>
+                        <Image Source="/src/Resources/Images/we.png" 
+                               Width="180" 
+                               Height="180"
+                               Stretch="Uniform"/>
                     </Button>
 
                     <Button Style="{StaticResource ProviderButton}" 
-                            Background="#FF7900"
+                            Background="White"
                             Click="OrangeButton_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Images/orange.png" 
-                                   Width="120" 
-                                   Height="120"
-                                   Margin="0,0,0,10"/>
-                            <TextBlock Text="أورانج" 
-                                      FontSize="20" 
-                                      FontWeight="Bold"
-                                      Foreground="White"
-                                      HorizontalAlignment="Center"/>
-                        </StackPanel>
+                        <Image Source="/src/Resources/Images/orange.png" 
+                               Width="180" 
+                               Height="180"
+                               Stretch="Uniform"/>
                     </Button>
                 </WrapPanel>
             </StackPanel>

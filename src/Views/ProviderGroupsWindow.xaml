@@ -43,11 +43,18 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="{Binding Provider, StringFormat='إدارة مجموعات {0}'}"
-                   FontSize="28"
-                   FontWeight="Bold"
-                   Margin="0,0,0,20"/>
+        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+            <Image DockPanel.Dock="Left" 
+                   Source="{Binding Provider, Converter={StaticResource ProviderToLogoConverter}}" 
+                   Width="80" 
+                   Height="80"
+                   Margin="0,0,20,0"
+                   VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Provider, StringFormat='إدارة مجموعات {0}'}"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"/>
+        </DockPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
             <Button Content="+ إضافة مجموعة جديدة"
