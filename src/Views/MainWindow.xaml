@@ -65,11 +65,29 @@
                 <DropShadowEffect Color="Black" Opacity="0.1" BlurRadius="5" ShadowDepth="2"/>
             </Border.Effect>
             <StackPanel>
-                <TextBlock Text="نظام إدارة خطوط الهاتف المحمول" 
-                          FontSize="28" 
-                          FontWeight="Bold"
-                          Foreground="#333"
-                          HorizontalAlignment="Center"/>
+                <DockPanel>
+                    <Button Content="🔍 بحث شامل" 
+                            DockPanel.Dock="Left"
+                            Click="SearchButton_Click"
+                            Padding="20,10"
+                            Margin="0,0,20,0"
+                            Background="#2196F3"
+                            Foreground="White"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Effect>
+                            <DropShadowEffect Color="Black" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
+                        </Button.Effect>
+                    </Button>
+                    <TextBlock Text="نظام إدارة خطوط الهاتف المحمول" 
+                              FontSize="28" 
+                              FontWeight="Bold"
+                              Foreground="#333"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                </DockPanel>
                 
                 <StackPanel Margin="0,20,0,0" x:Name="AlertsPanel">
                     <DockPanel>

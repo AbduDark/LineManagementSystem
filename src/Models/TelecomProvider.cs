@@ -27,7 +27,7 @@ public static class TelecomProviderExtensions
         return provider switch
         {
             TelecomProvider.Vodafone => "#E60000",    // أحمر فودافون
-            TelecomProvider.Etisalat => "#00A651",    // أخضر اتصالات
+            TelecomProvider.Etisalat => "#7FBA00",    // أخضر اتصالات
             TelecomProvider.We => "#6A1B9A",          // بنفسجي وي
             TelecomProvider.Orange => "#FF7900",      // برتقالي أورانج
             _ => "#000000"
@@ -43,6 +43,18 @@ public static class TelecomProviderExtensions
             TelecomProvider.We => "/Resources/Images/we.png",
             TelecomProvider.Orange => "/Resources/Images/orange.png",
             _ => ""
+        };
+    }
+
+    public static string GetArabicName(this TelecomProvider provider)
+    {
+        return provider switch
+        {
+            TelecomProvider.Vodafone => "فودافون",
+            TelecomProvider.Etisalat => "اتصالات",
+            TelecomProvider.We => "وي",
+            TelecomProvider.Orange => "أورانج",
+            _ => "غير محدد"
         };
     }
 }

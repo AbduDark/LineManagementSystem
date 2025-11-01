@@ -54,6 +54,12 @@ public partial class MainWindow : Window
         OnNavigateToProvider(TelecomProvider.Orange);
     }
 
+    private void SearchButton_Click(object sender, RoutedEventArgs e)
+    {
+        var searchWindow = new SearchWindow(_groupService);
+        searchWindow.Show();
+    }
+
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
