@@ -84,8 +84,17 @@ public class GroupDetailsViewModel : BaseViewModel
         {
             if (SelectedLine != null)
             {
-                _groupService.DeleteLine(SelectedLine.Id);
-                LoadLines();
+                try
+                {
+                    _groupService.DeleteLine(SelectedLine.Id);
+                    LoadLines();
+                    SelectedLine = null;
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"حدث خطأ أثناء الحذف: {ex.Message}", "خطأ", 
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                }
             }
         }, () => SelectedLine != null);
 

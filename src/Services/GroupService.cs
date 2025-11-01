@@ -90,11 +90,19 @@ public class GroupService
 
     public void DeleteLine(int lineId)
     {
-        var line = _context.PhoneLines.Find(lineId);
-        if (line != null)
+        try
         {
-            _context.PhoneLines.Remove(line);
-            _context.SaveChanges();
+            var line = _context.PhoneLines.Find(lineId);
+            if (line != null)
+            {
+                _context.PhoneLines.Remove(line);
+                _context.SaveChanges();
+            }
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // السطر اتحذف فعلاً من مكان تاني، نعمل refresh للـ context
+            _context.ChangeTracker.Clear();
         }
     }
 

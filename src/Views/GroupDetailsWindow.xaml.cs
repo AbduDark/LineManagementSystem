@@ -17,7 +17,11 @@ public partial class GroupDetailsWindow : Window
     {
         InitializeComponent();
 
-        var groupService = new GroupService(new DatabaseContext());
+        var context = new DatabaseContext();
+        // نتأكد إن الـ context نظيف من أي tracking قديم
+        context.ChangeTracker.Clear();
+        
+        var groupService = new GroupService(context);
         _viewModel = new GroupDetailsViewModel(groupService, group);
         _parentViewModel = parentViewModel;
         _alertService = alertService;
