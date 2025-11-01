@@ -89,10 +89,7 @@
                         <ItemsControl x:Name="AlertsList" ItemsSource="{Binding Alerts}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Style="{StaticResource AlertCard}">
-                                        <Border.Background>
-                                            <SolidColorBrush Color="{Binding GetColorHex, Converter={StaticResource ColorConverter}}"/>
-                                        </Border.Background>
+                                    <Border Style="{StaticResource AlertCard}" Background="{Binding GetColorBrush}">
                                         <DockPanel>
                                             <Button Content="✓" 
                                                     DockPanel.Dock="Left"
@@ -104,7 +101,8 @@
                                                     Foreground="Green"
                                                     BorderThickness="0"
                                                     FontWeight="Bold"
-                                                    Cursor="Hand"/>
+                                                    Cursor="Hand"
+                                                    Margin="10,0,0,0"/>
                                             <TextBlock Text="{Binding GetArabicMessage}" 
                                                       FontSize="14"
                                                       Foreground="White"
@@ -133,8 +131,7 @@
                 <WrapPanel HorizontalAlignment="Center">
                     <Button Style="{StaticResource ProviderButton}" 
                             Background="#E60000"
-                            Command="{Binding NavigateToProviderCommand}"
-                            CommandParameter="Vodafone">
+                            Click="VodafoneButton_Click">
                         <StackPanel>
                             <Image Source="/Resources/Images/vodafone.png" 
                                    Width="120" 
@@ -150,8 +147,7 @@
 
                     <Button Style="{StaticResource ProviderButton}" 
                             Background="#7FBA00"
-                            Command="{Binding NavigateToProviderCommand}"
-                            CommandParameter="Etisalat">
+                            Click="EtisalatButton_Click">
                         <StackPanel>
                             <Image Source="/Resources/Images/etisalat.png" 
                                    Width="120" 
@@ -167,8 +163,7 @@
 
                     <Button Style="{StaticResource ProviderButton}" 
                             Background="#6A1B9A"
-                            Command="{Binding NavigateToProviderCommand}"
-                            CommandParameter="We">
+                            Click="WeButton_Click">
                         <StackPanel>
                             <Image Source="/Resources/Images/we.png" 
                                    Width="120" 
@@ -184,8 +179,7 @@
 
                     <Button Style="{StaticResource ProviderButton}" 
                             Background="#FF7900"
-                            Command="{Binding NavigateToProviderCommand}"
-                            CommandParameter="Orange">
+                            Click="OrangeButton_Click">
                         <StackPanel>
                             <Image Source="/Resources/Images/orange.png" 
                                    Width="120" 

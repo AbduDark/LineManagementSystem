@@ -43,4 +43,12 @@ public class Alert
             _ => "#9E9E9E"
         };
     }
+
+    public System.Windows.Media.Brush GetColorBrush()
+    {
+        var color = GetColorHex();
+        return new System.Windows.Media.SolidColorBrush(
+            (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color)
+        );
+    }
 }

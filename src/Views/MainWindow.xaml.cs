@@ -34,6 +34,26 @@ public partial class MainWindow : Window
         groupsWindow.Show();
     }
 
+    private void VodafoneButton_Click(object sender, RoutedEventArgs e)
+    {
+        OnNavigateToProvider(TelecomProvider.Vodafone);
+    }
+
+    private void EtisalatButton_Click(object sender, RoutedEventArgs e)
+    {
+        OnNavigateToProvider(TelecomProvider.Etisalat);
+    }
+
+    private void WeButton_Click(object sender, RoutedEventArgs e)
+    {
+        OnNavigateToProvider(TelecomProvider.We);
+    }
+
+    private void OrangeButton_Click(object sender, RoutedEventArgs e)
+    {
+        OnNavigateToProvider(TelecomProvider.Orange);
+    }
+
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
