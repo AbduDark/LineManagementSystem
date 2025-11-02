@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 using LineManagementSystem.Models;
 using LineManagementSystem.Services;
 using LineManagementSystem.ViewModels;
@@ -34,6 +35,17 @@ public partial class ProviderGroupsWindow : Window
         if (dialog.ShowDialog() == true && dialog.ResultGroup != null)
         {
             _viewModel.SaveGroup(dialog.ResultGroup);
+        }
+    }
+
+    private void DataGrid_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter && _viewModel.SelectedGroup != null)
+        {
+            if (_viewModel.ViewGroupDetailsCommand.CanExecute(null))
+            {
+                _viewModel.ViewGroupDetailsCommand.Execute(null);
+            }
         }
     }
 }

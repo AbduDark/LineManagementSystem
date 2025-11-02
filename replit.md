@@ -100,14 +100,16 @@ LineManagementSystem/
 
 ## Recent Changes
 
-### November 2, 2025 (Evening Update)
+### November 2, 2025 (Evening Update - Latest)
+- ✅ **Added Enter key shortcut in Groups Window**: Press Enter on selected group → Opens group details window automatically
+- ✅ **Auto-focus on Phone Number field**: When opening line entry form, cursor automatically goes to Phone Number field (instead of Name)
 - ✅ **Fixed Entity Framework tracking bug**: Added ChangeTracker.Clear() in UpdateLine to prevent duplicate entity tracking errors
 - ✅ **Improved Enter key behavior for QR scanner workflow**:
   - Name field → Enter → National ID field
   - National ID field → Enter → Phone Number field
   - Phone Number field → Enter → Internal ID field
   - Internal ID field → Enter → **Auto-save line** (perfect for rapid data entry)
-  - Cash Wallet Number field → Enter → Back to Name field (for next line)
+  - Cash Wallet Number field → Enter → Back to **Phone Number field** (for next line)
 
 ### November 2, 2025 (Earlier)
 - ✅ Added automatic post-build copy of images to output directory (solves icon visibility issue when running exe)

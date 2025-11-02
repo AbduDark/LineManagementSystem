@@ -29,7 +29,7 @@ public partial class GroupDetailsWindow : Window
         _viewModel.LineAdded += () =>
         {
             _parentViewModel.LoadGroups();
-            txtName.Focus();
+            txtPhoneNumber.Focus();
         };
 
         DataContext = _viewModel;
@@ -49,6 +49,15 @@ public partial class GroupDetailsWindow : Window
         Background = new System.Windows.Media.SolidColorBrush(
             (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(backgroundColor)
         );
+    }
+
+    protected override void OnContentRendered(EventArgs e)
+    {
+        base.OnContentRendered(e);
+        if (_viewModel.IsAddingLine)
+        {
+            txtPhoneNumber.Focus();
+        }
     }
 
     private void TextBox_KeyDown(object sender, KeyEventArgs e)

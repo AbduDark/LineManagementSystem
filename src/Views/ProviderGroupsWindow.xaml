@@ -116,7 +116,8 @@
                       RowHeight="60"
                       HeadersVisibility="Column"
                       CanUserResizeRows="False"
-                      AlternatingRowBackground="#FAFAFA">
+                      AlternatingRowBackground="#FAFAFA"
+                      KeyDown="DataGrid_KeyDown">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="0"/>
