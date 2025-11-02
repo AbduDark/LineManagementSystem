@@ -131,15 +131,6 @@
                         <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
                     </Button.Effect>
                 </Button>
-                <Button Content="✓ تحديد الكل (محفظة كاش)"
-                        Style="{StaticResource ActionButton}"
-                        Background="#00897B"
-                        Command="{Binding SelectAllCashWalletCommand}"
-                        ToolTip="تحديد جميع الخطوط بأن لديها محفظة كاش">
-                    <Button.Effect>
-                        <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
-                    </Button.Effect>
-                </Button>
             </StackPanel>
         </Border>
 
