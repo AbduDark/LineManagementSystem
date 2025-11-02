@@ -84,16 +84,25 @@ public class GroupDetailsViewModel : BaseViewModel
         {
             if (SelectedLine != null)
             {
-                try
+                var confirmResult = System.Windows.MessageBox.Show(
+                    $"هل تريد حذف الخط: {SelectedLine.PhoneNumber}؟",
+                    "تأكيد الحذف",
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Warning);
+
+                if (confirmResult == System.Windows.MessageBoxResult.Yes)
                 {
-                    _groupService.DeleteLine(SelectedLine.Id);
-                    LoadLines();
-                    SelectedLine = null;
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.MessageBox.Show($"حدث خطأ أثناء الحذف: {ex.Message}", "خطأ", 
-                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    try
+                    {
+                        _groupService.DeleteLine(SelectedLine.Id);
+                        LoadLines();
+                        SelectedLine = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.MessageBox.Show($"حدث خطأ أثناء الحذف: {ex.Message}", "خطأ", 
+                            System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    }
                 }
             }
         }, () => SelectedLine != null);

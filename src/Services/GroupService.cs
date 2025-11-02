@@ -46,11 +46,18 @@ public class GroupService
 
     public void DeleteGroup(int id)
     {
-        var group = _context.LineGroups.Find(id);
-        if (group != null)
+        try
         {
-            _context.LineGroups.Remove(group);
-            _context.SaveChanges();
+            // تنظيف الـ tracker قبل الحذف
+            _context.ChangeTracker.Clear();
+            
+            // حذف المجموعة مباشرة باستخدام ExecuteDelete
+            _context.LineGroups.Where(g => g.Id == id).ExecuteDelete();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // المجموعة محذوفة فعلاً
+            _context.ChangeTracker.Clear();
         }
     }
 

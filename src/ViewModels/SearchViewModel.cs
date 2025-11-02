@@ -105,6 +105,9 @@ public class SearchViewModel : BaseViewModel
 
             if (confirmResult == System.Windows.MessageBoxResult.Yes)
             {
+                // تنظيف الـ tracker قبل الحذف
+                _context.ChangeTracker.Clear();
+                
                 if (result.Type == "مجموعة")
                 {
                     var group = _context.LineGroups.FirstOrDefault(g => g.Name == result.GroupName);

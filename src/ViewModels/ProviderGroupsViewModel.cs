@@ -54,8 +54,25 @@ public class ProviderGroupsViewModel : BaseViewModel
         {
             if (SelectedGroup != null)
             {
-                _groupService.DeleteGroup(SelectedGroup.Id);
-                LoadGroups();
+                var confirmResult = System.Windows.MessageBox.Show(
+                    "هل تريد حذف هذه المجموعة وكل الخطوط التابعة لها؟",
+                    "تأكيد الحذف",
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Warning);
+
+                if (confirmResult == System.Windows.MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        _groupService.DeleteGroup(SelectedGroup.Id);
+                        LoadGroups();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.MessageBox.Show($"حدث خطأ أثناء الحذف: {ex.Message}", "خطأ",
+                            System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    }
+                }
             }
         }, () => SelectedGroup != null);
 
