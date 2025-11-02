@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="إضافة/تعديل مجموعة"
-        Height="550" Width="600"
+        Height="650" Width="700"
         WindowStartupLocation="CenterOwner"
         FlowDirection="RightToLeft"
         Background="{DynamicResource WindowBackground}"
@@ -18,12 +18,46 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="بيانات المجموعة"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Margin="0,0,0,20"
-                   Foreground="{DynamicResource TextPrimary}"/>
+        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+            <Button DockPanel.Dock="Left"
+                    Content="🌙"
+                    Width="50"
+                    Height="50"
+                    FontSize="24"
+                    Background="{DynamicResource CardBackground}"
+                    Foreground="{DynamicResource TextPrimary}"
+                    BorderThickness="2"
+                    BorderBrush="{DynamicResource BorderColor}"
+                    Cursor="Hand"
+                    ToolTip="تبديل الوضع الليلي/النهاري"
+                    Click="BtnToggleTheme_Click"
+                    Margin="0,0,15,0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="25"
+                                Width="50" Height="50">
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" Opacity="0.2" BlurRadius="10" ShadowDepth="3"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <TextBlock Text="بيانات المجموعة"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource TextPrimary}"/>
+        </DockPanel>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
@@ -60,20 +94,8 @@
                           Foreground="{DynamicResource TextPrimary}"/>
 
                 <StackPanel Margin="0,0,0,15">
-                    <TextBlock x:Name="lblLastRenewed" Text="آخر تجديد" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <TextBlock x:Name="lblLastRenewed" Text="آخر تجديد (سيتم حساب التجديد القادم تلقائياً بعد 60 يوم)" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
                     <DatePicker x:Name="dtpLastRenewed"
-                                Padding="10"
-                                FontSize="14"
-                                Margin="0,0,0,15"
-                                Foreground="#2196F3"
-                                FontWeight="SemiBold"
-                                Background="{DynamicResource InputBackground}"
-                                BorderBrush="{DynamicResource InputBorder}"/>
-                </StackPanel>
-                
-                <StackPanel Margin="0,0,0,15">
-                    <TextBlock Text="التجديد التالي" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
-                    <DatePicker x:Name="dpNextRenewal"
                                 Padding="10"
                                 FontSize="14"
                                 Margin="0,0,0,15"

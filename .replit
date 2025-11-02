@@ -22,9 +22,9 @@ args = "Build Validation"
 name = "Build Validation"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "dotnet build LineManagementSystem.csproj"
-
-[workflows.workflow.metadata]
-outputType = "console"

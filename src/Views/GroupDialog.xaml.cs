@@ -1,5 +1,6 @@
 using System.Windows;
 using LineManagementSystem.Models;
+using LineManagementSystem.Services;
 
 namespace LineManagementSystem.Views;
 
@@ -102,5 +103,10 @@ public partial class GroupDialog : Window
     {
         DialogResult = false;
         Close();
+    }
+
+    private void BtnToggleTheme_Click(object sender, RoutedEventArgs e)
+    {
+        ThemeManager.ToggleTheme();
     }
 }

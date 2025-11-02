@@ -54,11 +54,21 @@ public class ProviderGroupsViewModel : BaseViewModel
         {
             if (SelectedGroup != null)
             {
+                var lineCount = SelectedGroup.Lines?.Count ?? 0;
+                var message = $"⚠️ تحذير: حذف نهائي\n\n" +
+                             $"المجموعة: {SelectedGroup.Name}\n" +
+                             $"عدد الخطوط: {lineCount}\n" +
+                             $"الشركة: {SelectedGroup.Provider}\n\n" +
+                             $"سيتم حذف المجموعة وجميع الخطوط التابعة لها ({lineCount} خط) بشكل نهائي.\n" +
+                             $"هذا الإجراء لا يمكن التراجع عنه!\n\n" +
+                             $"هل أنت متأكد من رغبتك في المتابعة؟";
+
                 var confirmResult = System.Windows.MessageBox.Show(
-                    "هل تريد حذف هذه المجموعة وكل الخطوط التابعة لها؟",
-                    "تأكيد الحذف",
+                    message,
+                    "⚠️ تأكيد الحذف النهائي",
                     System.Windows.MessageBoxButton.YesNo,
-                    System.Windows.MessageBoxImage.Warning);
+                    System.Windows.MessageBoxImage.Warning,
+                    System.Windows.MessageBoxResult.No);
 
                 if (confirmResult == System.Windows.MessageBoxResult.Yes)
                 {
@@ -66,11 +76,19 @@ public class ProviderGroupsViewModel : BaseViewModel
                     {
                         _groupService.DeleteGroup(SelectedGroup.Id);
                         LoadGroups();
+                        System.Windows.MessageBox.Show(
+                            $"✓ تم حذف المجموعة '{SelectedGroup.Name}' بنجاح",
+                            "نجح الحذف",
+                            System.Windows.MessageBoxButton.OK,
+                            System.Windows.MessageBoxImage.Information);
                     }
                     catch (Exception ex)
                     {
-                        System.Windows.MessageBox.Show($"حدث خطأ أثناء الحذف: {ex.Message}", "خطأ",
-                            System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                        System.Windows.MessageBox.Show(
+                            $"❌ فشل الحذف\n\nحدث خطأ أثناء حذف المجموعة:\n{ex.Message}\n\nالرجاء المحاولة مرة أخرى أو الاتصال بالدعم الفني.",
+                            "خطأ في الحذف",
+                            System.Windows.MessageBoxButton.OK,
+                            System.Windows.MessageBoxImage.Error);
                     }
                 }
             }

@@ -138,6 +138,8 @@
                     <Style TargetType="DataGridRow">
                         <Setter Property="Background" Value="{DynamicResource DataGridRowBackground}"/>
                         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource DataGridGridLines}"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{DynamicResource DataGridRowHover}"/>
@@ -148,6 +150,8 @@
                                 </MultiTrigger.Conditions>
                                 <Setter Property="Background" Value="{DynamicResource DataGridRowSelected}"/>
                                 <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+                                <Setter Property="BorderThickness" Value="3,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="#1976D2"/>
                             </MultiTrigger>
                         </Style.Triggers>
                     </Style>
@@ -195,6 +199,7 @@
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                                 <Setter Property="Padding" Value="10,0"/>
                                 <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Foreground" Value="#2196F3"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -202,7 +207,8 @@
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Foreground" Value="#546E7A"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#FFC107"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -234,7 +240,8 @@
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Foreground" Value="#757575"/>
+                                <Setter Property="Foreground" Value="#2196F3"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -261,7 +268,8 @@
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Foreground" Value="#424242"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Foreground" Value="#2196F3"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -269,7 +277,8 @@
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Foreground" Value="#424242"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Foreground" Value="#2196F3"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -277,8 +286,8 @@
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Foreground" Value="#6A1B9A"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Foreground" Value="#FF9800"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
