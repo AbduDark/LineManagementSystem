@@ -37,6 +37,7 @@ public class GroupDetailsViewModel : BaseViewModel
     public ICommand DeleteLineCommand { get; }
     public ICommand SaveLineCommand { get; }
     public ICommand CancelAddLineCommand { get; }
+    public ICommand SelectAllCashWalletCommand { get; }
 
     private PhoneLine _newLine = new();
     public PhoneLine NewLine
@@ -134,6 +135,22 @@ public class GroupDetailsViewModel : BaseViewModel
             IsAddingLine = false;
             NewLine = new PhoneLine();
         });
+
+        SelectAllCashWalletCommand = new RelayCommand(() =>
+        {
+            foreach (var line in Lines)
+            {
+                line.HasCashWallet = true;
+            }
+            
+            // حفظ التغييرات في قاعدة البيانات
+            foreach (var line in Lines)
+            {
+                _groupService.UpdateLine(line);
+            }
+            
+            LoadLines();
+        }, () => Lines.Any());
 
         LoadLines();
     }
