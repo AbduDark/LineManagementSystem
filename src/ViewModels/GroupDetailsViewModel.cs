@@ -37,6 +37,7 @@ public class GroupDetailsViewModel : BaseViewModel
     public ICommand DeleteLineCommand { get; }
     public ICommand SaveLineCommand { get; }
     public ICommand CancelAddLineCommand { get; }
+    public ICommand SetAllLinesWithWalletCommand { get; }
 
     private PhoneLine _newLine = new();
     public PhoneLine NewLine
@@ -134,6 +135,31 @@ public class GroupDetailsViewModel : BaseViewModel
             IsAddingLine = false;
             NewLine = new PhoneLine();
         });
+
+        SetAllLinesWithWalletCommand = new RelayCommand(() =>
+        {
+            var confirmResult = System.Windows.MessageBox.Show(
+                "هل تريد تحديد جميع الخطوط في هذه المجموعة بمحفظة كاش؟",
+                "تأكيد",
+                System.Windows.MessageBoxButton.YesNo,
+                System.Windows.MessageBoxImage.Question);
+
+            if (confirmResult == System.Windows.MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _groupService.SetAllLinesWithWallet(Group.Id);
+                    LoadLines();
+                    System.Windows.MessageBox.Show("تم تحديد جميع الخطوط بمحفظة كاش بنجاح!", "نجح", 
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"حدث خطأ: {ex.Message}", "خطأ", 
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                }
+            }
+        }, () => Lines.Count > 0);
 
         LoadLines();
     }

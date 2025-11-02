@@ -116,4 +116,18 @@ public class GroupService
             .GroupBy(g => g.Provider)
             .ToDictionary(g => g.Key, g => g.Count());
     }
+
+    public void SetAllLinesWithWallet(int groupId)
+    {
+        var group = GetGroupById(groupId);
+        if (group != null && group.Lines.Count > 0)
+        {
+            foreach (var line in group.Lines)
+            {
+                line.HasCashWallet = true;
+                line.UpdatedAt = DateTime.Now;
+            }
+            _context.SaveChanges();
+        }
+    }
 }

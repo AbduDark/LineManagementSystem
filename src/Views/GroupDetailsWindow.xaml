@@ -132,6 +132,14 @@
                         <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
                     </Button.Effect>
                 </Button>
+                <Button Content="💰 تحديد الكل بمحفظة"
+                        Style="{StaticResource ActionButton}"
+                        Background="#FF9800"
+                        Command="{Binding SetAllLinesWithWalletCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="5" ShadowDepth="2"/>
+                    </Button.Effect>
+                </Button>
             </StackPanel>
         </Border>
 
