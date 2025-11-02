@@ -1,9 +1,9 @@
-
 <Window x:Class="LineManagementSystem.Views.SearchWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LineManagementSystem.Converters" 
         mc:Ignorable="d"
         Title="بحث شامل عن الخطوط"
         Height="700" Width="1300"
@@ -13,6 +13,8 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <local:ProviderToLogoConverter x:Key="ProviderToLogoConverter"/>
+        <local:PhoneLineToColorConverter x:Key="PhoneLineToColorConverter"/>
     </Window.Resources>
 
     <Grid Margin="20">
@@ -188,16 +190,16 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="رقم الخط" Binding="{Binding PhoneNumber}" Width="130">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Medium"/>
-                                <Setter Property="Foreground" Value="#1976D2"/>
-                                <Setter Property="FontSize" Value="14"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="رقم الخط" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PhoneNumber}" 
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center"
+                                           Foreground="{Binding Line, Converter={StaticResource PhoneLineToColorConverter}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="الرقم القومي" Binding="{Binding NationalId}" Width="140">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">

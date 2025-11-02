@@ -55,3 +55,29 @@ public class ProviderToColorConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+
+public class PhoneLineToColorConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is PhoneLine line && line.Group != null)
+        {
+            var hexColor = line.Group.Provider.GetColorHex();
+            try
+            {
+                var color = (Color)System.Windows.Media.ColorConverter.ConvertFromString(hexColor);
+                return new SolidColorBrush(color);
+            }
+            catch
+            {
+                return new SolidColorBrush(Colors.Black);
+            }
+        }
+        return new SolidColorBrush(Colors.Black);
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
