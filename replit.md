@@ -101,24 +101,31 @@ LineManagementSystem/
 ## Recent Changes
 
 ### November 2, 2025 (Night Update - Latest)
-- ✅ **Added Dark Mode Support**:
-  - Created ThemeManager service for dynamic theme switching
-  - Added theme toggle button (🌙) in all main windows
-  - Light Mode: Clean white backgrounds with subtle shadows
-  - Dark Mode: Modern dark backgrounds (#121212) with improved contrast
-  - Dynamic color resources that update across all windows instantly
-- ✅ **Modernized UI Design**:
-  - Increased corner radius for more modern look (8-24px)
-  - Enhanced shadow effects for better depth perception
-  - Improved typography with better font sizes and weights
-  - Better spacing and padding throughout the application
-  - Provider cards now show provider names with brand colors
-  - Modern card-based design with subtle borders
-- ✅ **Added "تحديد الكل بمحفظة" Button**:
-  - New button in GroupDetailsWindow to set all lines to have cash wallet
-  - Confirmation dialog before applying changes
-  - Success message after completion
-  - Located in the action buttons toolbar with orange color (#FF9800)
+- ✅ **Fixed Dark Mode Color Consistency**:
+  - Updated all DataGrid styles to use DynamicResource for theme-aware colors
+  - Fixed text visibility issues in Light/Dark modes
+  - Proper text contrast: white text on dark backgrounds, dark text on light backgrounds
+  - Improved hover and selection styles with dynamic colors
+  - Added comprehensive DataGrid color resources (HeaderForeground, RowBackground, RowHover, RowSelected, CellSelected, GridLines)
+  - Removed hardcoded provider backgrounds in GroupDetailsWindow for theme compatibility
+- ✅ **Added Dark Mode to All Windows**:
+  - Extended Dark Mode support to SearchWindow
+  - Theme toggle button (🌙) now available in all main windows
+  - Instant theme switching across all open windows
+- ✅ **Added Settings Button**:
+  - New ⚙️ Settings button in MainWindow header
+  - Shows current theme mode (Light/Dark)
+  - Instructions for theme switching
+  - Placeholder for future settings features
+- ✅ **Enhanced DataGrid Styling**:
+  - Better hover effects in both themes
+  - Improved selection highlighting
+  - Consistent grid line colors
+  - Professional header styling with proper contrast
+- ✅ **Build Validation**:
+  - Successfully compiled with 0 warnings, 0 errors
+  - All theme colors properly configured
+  - All windows fully responsive to theme changes
 
 ### November 2, 2025 (Evening Update)
 - ✅ **Enhanced details display in tables**: 
