@@ -1,273 +1,57 @@
 # Line Management System for Telecom Providers
 
-## Project Information
-
-**Owner**: Ahmed Elsisi (أحمد السيسي)  
-**Developer**: Abdelrahman Sayed (عبد الرحمن سيد)  
-**Development Assistance**: Replit Agent
-
 ## Overview
-
-A Windows desktop application (WPF) for managing mobile phone lines for Egyptian telecom providers (Vodafone, Etisalat, WE, Orange). The system manages groups of lines with automatic renewal tracking, customer delivery management, and barcode scanning support.
-
-**Critical Note**: This is a WPF application that runs exclusively on Windows. It cannot be executed on Replit or Linux-based environments.
+This project is a Windows desktop application (WPF) designed to manage mobile phone lines for Egyptian telecom providers (Vodafone, Etisalat, WE, Orange). Its primary purpose is to organize groups of lines, track automatic renewals, manage customer deliveries, and support barcode scanning for efficient data entry. The system aims to streamline line management operations for telecom agents.
 
 ## User Preferences
-
 Preferred communication style: Simple, everyday language.
 
 ## System Architecture
 
-### Frontend Architecture
-- **Framework**: WPF (Windows Presentation Foundation) - .NET desktop UI framework
+### Frontend
+- **Framework**: WPF (.NET desktop UI framework)
 - **Platform**: Windows-only (Windows 10 or newer)
-- **Language**: C# with XAML for UI markup
-- **UI Design**: Color-coded interfaces for different telecom providers (Vodafone=Red, Etisalat=Green, WE=Purple, Orange=Orange)
+- **Language**: C# with XAML
+- **UI Design**: Color-coded interfaces per telecom provider (Vodafone=Red, Etisalat=Green, WE=Purple, Orange=Orange). Utilizes MaterialDesignThemes for UI components and supports light/dark modes.
 
 ### Core Business Logic
-
-**Group Management System**
-- Maximum capacity: 50 lines per group
-- Multi-provider support: 4 Egyptian telecom companies
-- Line states: Active, Suspended, Blocked, Without Cash Wallet, With Cash Wallet
-- Each group tracks: responsible employee, customer assignment, expected delivery date
-- Business Group type: Special group type with confirmation tracking (1-3 checkmarks per line)
-- Additional details field (optional, up to 1000 characters) for extra group information
-
-**Line Entity Structure**
-- Person name
-- National ID (14 digits)
-- Phone number
-- Internal ID
-- Cash wallet flag (yes/no)
-- Wallet number (optional)
-- Details field (optional, up to 500 characters)
-- Confirmation level (0-3) for business groups
-
-**Automatic Renewal System**
-- 60-day renewal cycle for groups with cash wallets
-- Notification system:
-  - Alert 7 days before renewal due date
-  - Alert on expiration date
-  
-**Delivery Tracking System**
-- Customer assignment per group
-- Expected delivery date tracking
-- Notification system:
-  - Alert 3 days before delivery date
-  - Alert on overdue deliveries
-
-### Input Method Support
-- **Hardware Integration**: USB barcode scanner support (XB-2055 USB 1D Barcode Scanner)
-- Auto-field navigation on Enter key press
-- Rapid line data entry workflow
+- **Group Management**: Supports up to 50 lines per group across four telecom providers. Lines have states (Active, Suspended, Blocked, With/Without Cash Wallet). Groups track responsible employee, customer, and expected delivery date. A "Business Group" type includes confirmation tracking (0-3 levels per line).
+- **Line Entity**: Stores person name, national ID (14 digits), phone number, internal ID, cash wallet flag (with optional wallet number), and details field.
+- **Automatic Renewal**: Tracks 60-day renewal cycles for cash wallet groups with 7-day and expiration day alerts.
+- **Delivery Tracking**: Manages customer assignment and expected delivery dates with 3-day pre-delivery and overdue alerts.
+- **Backup & Restore**: Manual and automatic (24-hour) backup system with restore functionality and cleanup of old backups.
+- **Reporting**: Export functionality for lines and groups to Excel and PDF formats, including provider-specific branding and statistics.
 
 ### Data Architecture
-- Entity relationships: Groups (1:Many) Lines
-- Group capacity constraint: 50 lines maximum
-- National ID validation: 14-digit format
-- Optional wallet number field (conditional on cash wallet flag)
+- **Relationships**: Groups can have many Lines (1:Many).
+- **Validation**: National ID (14-digit format) and conditional wallet number.
+
+### Input Methods
+- **Hardware Integration**: Supports USB 1D barcode scanners (e.g., XB-2055) for rapid line data entry.
+- **Workflow**: Optimized data entry with auto-field navigation and auto-save on Enter key press.
+
+### System Design
+- **MVVM Pattern**: Utilizes Model-View-ViewModel for separation of concerns.
+- **Theming**: Comprehensive light and dark mode support across all windows with dynamic resource binding.
+- **Error Handling**: Improved delete confirmation and error messages.
 
 ## External Dependencies
 
 ### Hardware
-- **XB-2055 USB 1D Barcode Scanner** - For rapid line data entry via barcode/QR code scanning
+- **XB-2055 USB 1D Barcode Scanner**: For barcode/QR code scanning.
 
 ### Platform Requirements
-- Windows operating system (Windows 10 or newer)
-- .NET Framework/Runtime for WPF applications
+- **Windows Operating System**: Windows 10 or newer.
+- **.NET Framework/Runtime**: .NET 8.0 for WPF applications.
 
 ### Data Storage
-- **Database**: SQLite (local database file: linemanagement.db)
-- **ORM**: Entity Framework Core 8.0
-- **Entities**: LineGroup, PhoneLine, Alert
-- **Relationships**: Groups (1:Many) Lines, Groups (1:Many) Alerts
+- **Database**: SQLite (local `linemanagement.db` file).
+- **ORM**: Entity Framework Core 8.0.
+- **Entities**: LineGroup, PhoneLine, Alert.
 
 ### Third-Party Packages
-- Microsoft.EntityFrameworkCore.Sqlite (8.0.0) - Database ORM
-- Newtonsoft.Json (13.0.3) - JSON serialization
-- MaterialDesignThemes (5.0.0) - Material Design UI components
-
-## Project Structure
-
-```
-LineManagementSystem/
-├── src/
-│   ├── Models/              # Domain models (TelecomProvider, LineGroup, PhoneLine, Alert)
-│   ├── Services/            # Business logic services (DatabaseContext, AlertService, GroupService)
-│   ├── ViewModels/          # MVVM ViewModels with INPC
-│   ├── Views/               # XAML views (MainWindow, ProviderGroupsWindow, GroupDetailsWindow)
-│   ├── Resources/           # Images and styles
-│   └── Converters/          # Value converters for data binding
-├── App.xaml                 # Application entry point
-├── LineManagementSystem.csproj
-└── README.md
-```
-
-## Recent Changes
-
-### November 2, 2025 (Major Update - Backup & Reporting System)
-- ✅ **Complete DataGrid Selection Styling Overhaul**:
-  - Removed all hardcoded selection styles across all windows
-  - Created centralized ModernDataGridCell, ModernDataGridRow, ModernDataGridColumnHeader styles
-  - Implemented full theme-aware selection colors (works perfectly in Light/Dark modes)
-  - Selected rows now show Blue (#2196F3) background with White text in both themes
-  - Selected cells show lighter Blue (#42A5F5) with White text
-  - Eliminated all color visibility issues with selected rows
-- ✅ **Updated Project Credits**:
-  - Owner: Ahmed Elsisi (أحمد السيسي)
-  - Developer: Abdelrahman Sayed (عبد الرحمن سيد)
-  - Updated README.md and replit.md with proper attribution
-- ✅ **Backup & Restore System**:
-  - Created BackupService with full backup/restore functionality
-  - Manual backup with custom naming support
-  - Automatic backup system (24-hour intervals)
-  - Restore with safety checks and automatic rollback on failure
-  - Old backup cleanup (keeps latest 50)
-  - Dedicated backup directory (Backups/)
-- ✅ **Enhanced Settings Window**:
-  - Redesigned settings window (900x700) with better organization
-  - Backup section with 4 action buttons (Create, Restore, Open Folder, Delete Old)
-  - Auto-backup toggle with status display
-  - Reports section with placeholders for Excel/PDF export
-  - Provider statistics viewer (shows groups, lines, and wallet counts per provider)
-  - Updated app version to 2.0.0
-  - Professional card-based layout with sections
-- ✅ **Reports Foundation**:
-  - Added UI for Excel and PDF export (implementation pending)
-  - Provider statistics feature (fully functional)
-  - Displays comprehensive stats per telecom provider
-  - Shows total groups, lines, and cash wallet counts
-
-### November 2, 2025 (Late Night Update)
-- ✅ **Enhanced Search Window**:
-  - Increased row height from 45px to 60px for better readability
-  - Larger font sizes (14-15px) across all columns
-  - Custom column colors:
-    - Person Name: Blue (#2196F3)
-    - National ID: Blue (#2196F3)
-    - Internal ID: Blue (#2196F3)
-    - Details: Theme-aware (uses DynamicResource TextPrimary)
-  - Improved visual hierarchy with consistent typography
-- ✅ **Enhanced Group Dialog with Dark Mode Support**:
-  - Added theme toggle button (🌙) to GroupDialog with DynamicResource bindings
-  - Increased dialog size to 650x700 for better usability
-  - Theme button adapts to both Light/Dark modes with proper contrast
-- ✅ **Custom Column Colors in Groups Table**:
-  - Group Name: Blue (#2196F3) with bold font
-  - Status: Yellow (#FFC107) with bold font
-  - Last Renewal: Blue (#2196F3) with semi-bold font
-  - Responsible Employee: Blue (#2196F3) with semi-bold font
-  - Customer: Blue (#2196F3) with semi-bold font
-  - Delivery Date: Orange (#FF9800) with bold font
-- ✅ **Improved Selected Row Visual Design**:
-  - Added 3px left border in blue (#1976D2) for selected rows
-  - Enhanced selection highlighting with better contrast
-  - Added subtle row borders for better visual separation
-- ✅ **Enhanced Delete Confirmation Dialog**:
-  - Detailed confirmation message showing group name, line count, and provider
-  - Clear warning about permanent deletion
-  - Success message after deletion with group name confirmation
-  - Improved error messages with helpful context
-  - Safe default (No button) to prevent accidental deletions
-- ✅ **Removed Redundant NextRenewal Field**:
-  - Simplified UI by removing manual NextRenewal input (calculated automatically)
-  - Clear label explaining automatic 60-day calculation
-  - Maintains data integrity with existing save logic
-
-### November 2, 2025 (Night Update)
-- ✅ **Fixed Dark Mode Color Consistency**:
-  - Updated all DataGrid styles to use DynamicResource for theme-aware colors
-  - Fixed text visibility issues in Light/Dark modes
-  - Proper text contrast: white text on dark backgrounds, dark text on light backgrounds
-  - Improved hover and selection styles with dynamic colors
-  - Added comprehensive DataGrid color resources (HeaderForeground, RowBackground, RowHover, RowSelected, CellSelected, GridLines)
-  - Removed hardcoded provider backgrounds in GroupDetailsWindow for theme compatibility
-- ✅ **Added Dark Mode to All Windows**:
-  - Extended Dark Mode support to SearchWindow
-  - Theme toggle button (🌙) now available in all main windows
-  - Instant theme switching across all open windows
-- ✅ **Added Settings Button**:
-  - New ⚙️ Settings button in MainWindow header
-  - Shows current theme mode (Light/Dark)
-  - Instructions for theme switching
-  - Placeholder for future settings features
-- ✅ **Enhanced DataGrid Styling**:
-  - Better hover effects in both themes
-  - Improved selection highlighting
-  - Consistent grid line colors
-  - Professional header styling with proper contrast
-- ✅ **Build Validation**:
-  - Successfully compiled with 0 warnings, 0 errors
-  - All theme colors properly configured
-  - All windows fully responsive to theme changes
-
-### November 2, 2025 (Evening Update)
-- ✅ **Enhanced details display in tables**: 
-  - Added "التفاصيل الإضافية" column (250px width) in Groups table to show AdditionalDetails field
-  - Expanded "التفاصيل" column (250px width) in Lines table for better visibility
-  - Added text wrapping and tooltips for easy reading
-  - Increased row height (Groups: 60→80px, Lines: 40→60px) for multi-line text display
-- ✅ **Added Enter key shortcut in Groups Window**: Press Enter on selected group → Opens group details window automatically
-- ✅ **Auto-focus on Phone Number field**: When opening line entry form, cursor automatically goes to Phone Number field (instead of Name)
-- ✅ **Fixed Entity Framework tracking bug**: Added ChangeTracker.Clear() in UpdateLine to prevent duplicate entity tracking errors
-- ✅ **Improved Enter key behavior for QR scanner workflow**:
-  - Name field → Enter → National ID field
-  - National ID field → Enter → Phone Number field
-  - Phone Number field → Enter → Internal ID field
-  - Internal ID field → Enter → **Auto-save line** (perfect for rapid data entry)
-  - Cash Wallet Number field → Enter → Back to **Phone Number field** (for next line)
-
-### November 2, 2025 (Earlier)
-- ✅ Added automatic post-build copy of images to output directory (solves icon visibility issue when running exe)
-- ✅ Improved alert display with warning icons (⚠) instead of checkmarks
-- ✅ Enhanced alert UI with proper hide button and better visibility
-- ✅ Completely redesigned DataGrid in ProviderGroupsWindow with modern styling
-- ✅ Added color-coded cells and badges for better data visualization
-- ✅ Improved row height and spacing for better readability
-- ✅ Fixed resource pack URIs to ensure icons load correctly in all windows
-- ✅ Added proper Link elements in csproj to maintain correct resource logical names
-- ✅ **Fixed WPF Binding errors**: Converted all computed methods to properties for proper data binding
-  - LineGroup: GetLineCount, GetRemainingDaysForRenewal, CanAddMoreLines, etc.
-  - Alert: GetArabicMessage, GetColorBrush, GetColorHex
-- ✅ Updated all service and ViewModel code to use properties instead of methods
-
-### November 1, 2025
-- ✅ Implemented complete WPF application with MVVM pattern
-- ✅ Added SQLite database with Entity Framework Core
-- ✅ Created alert service with automatic 5-minute checks
-- ✅ Built color-coded UI for 4 telecom providers
-- ✅ Implemented QR scanner support with Enter key navigation
-- ✅ Added 60-day renewal tracking system
-- ✅ Implemented delivery tracking with alerts
-- ✅ Added build validation workflow (compiles on Linux via EnableWindowsTargeting)
-- ✅ Documented Windows-only execution requirements
-- ✅ Added Details field for phone lines (up to 500 characters)
-- ✅ Added AdditionalDetails field for groups (up to 1000 characters)
-- ✅ Implemented Business Group feature with confirmation levels (0-3 checkmarks)
-- ✅ Added confirmation tracking UI with color-coded buttons
-- ✅ Fixed duplicate assembly attribute errors
-- ✅ Fixed image resource paths (removed /src/ prefix)
-- ✅ Added ProviderToColorConverter for dynamic provider colors
-- ✅ Implemented colored headers in all provider windows (Vodafone=Red, Etisalat=Green, WE=Purple, Orange=Orange)
-- ✅ Improved text contrast with white text on colored backgrounds
-- ✅ Enhanced visual design with shadows and borders
-
-## Build and Deployment
-
-### On Replit (Build Validation Only)
-- A workflow validates the code compiles successfully
-- `dotnet build` runs successfully with EnableWindowsTargeting flag
-- **Note**: The application cannot RUN on Replit (Linux), only build validation
-
-### On Windows (Actual Execution)
-1. Install .NET 8.0 SDK or Runtime
-2. Clone/download the project
-3. Run: `dotnet restore && dotnet build && dotnet run`
-4. Application will launch with WPF UI
-
-## Known Limitations
-- Windows-only (WPF dependency)
-- Cannot run on Replit or any Linux/Mac environment
-- Requires Windows 10 or newer
-- Barcode scanner (XB-2055) only works on Windows with proper drivers
+- **Microsoft.EntityFrameworkCore.Sqlite (8.0.0)**: ORM for SQLite.
+- **Newtonsoft.Json (13.0.3)**: JSON serialization.
+- **MaterialDesignThemes (5.0.0)**: Material Design UI components.
+- **ClosedXML (0.104.2)**: Excel export functionality.
+- **QuestPDF (2025.1.0)**: PDF report generation.
