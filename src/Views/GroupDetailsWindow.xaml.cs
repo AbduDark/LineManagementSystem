@@ -138,20 +138,52 @@ public partial class GroupDetailsWindow : Window
 
     private void ExportExcel_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show(
-            $"قريباً: تصدير خطوط مجموعة '{_viewModel.Group.Name}' إلى Excel\n\nسيتم تصدير جميع بيانات الخطوط بتنسيق احترافي",
-            "ميزة قادمة",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        try
+        {
+            var saveDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Excel Files|*.xlsx",
+                FileName = $"خطوط_{_viewModel.Group.Name}_{DateTime.Now:yyyy-MM-dd}.xlsx"
+            };
+
+            if (saveDialog.ShowDialog() == true)
+            {
+                var exportService = new ExportService();
+                exportService.ExportLinesToExcel(_viewModel.Group.Lines ?? new System.Collections.ObjectModel.ObservableCollection<PhoneLine>(), 
+                    _viewModel.Group.Name, saveDialog.FileName);
+                MessageBox.Show("تم التصدير بنجاح!", "نجح", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{saveDialog.FileName}\"");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"حدث خطأ أثناء التصدير: {ex.Message}", "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void ExportPDF_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show(
-            $"قريباً: تصدير خطوط مجموعة '{_viewModel.Group.Name}' إلى PDF\n\nسيتم إنشاء تقرير PDF مفصل",
-            "ميزة قادمة",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        try
+        {
+            var saveDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "PDF Files|*.pdf",
+                FileName = $"خطوط_{_viewModel.Group.Name}_{DateTime.Now:yyyy-MM-dd}.pdf"
+            };
+
+            if (saveDialog.ShowDialog() == true)
+            {
+                var exportService = new ExportService();
+                exportService.ExportLinesToPDF(_viewModel.Group.Lines ?? new System.Collections.ObjectModel.ObservableCollection<PhoneLine>(), 
+                    _viewModel.Group.Name, saveDialog.FileName);
+                MessageBox.Show("تم التصدير بنجاح!", "نجح", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{saveDialog.FileName}\"");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"حدث خطأ أثناء التصدير: {ex.Message}", "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
