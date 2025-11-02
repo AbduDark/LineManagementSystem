@@ -39,8 +39,8 @@ public static class ThemeManager
             app.Resources["DataGridAlternateRow"] = new SolidColorBrush(Color.FromRgb(30, 30, 30));
             app.Resources["DataGridRowBackground"] = new SolidColorBrush(Color.FromRgb(28, 28, 28));
             app.Resources["DataGridRowHover"] = new SolidColorBrush(Color.FromRgb(45, 45, 45));
-            app.Resources["DataGridRowSelected"] = new SolidColorBrush(Color.FromRgb(60, 80, 100));
-            app.Resources["DataGridCellSelected"] = new SolidColorBrush(Color.FromRgb(50, 70, 90));
+            app.Resources["DataGridRowSelected"] = new SolidColorBrush(Color.FromRgb(25, 118, 210));
+            app.Resources["DataGridCellSelected"] = new SolidColorBrush(Color.FromRgb(21, 101, 192));
             app.Resources["DataGridGridLines"] = new SolidColorBrush(Color.FromRgb(50, 50, 50));
             app.Resources["InputBackground"] = new SolidColorBrush(Color.FromRgb(40, 40, 40));
             app.Resources["InputBorder"] = new SolidColorBrush(Color.FromRgb(70, 70, 70));

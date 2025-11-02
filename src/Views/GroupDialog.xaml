@@ -8,7 +8,7 @@
         Height="550" Width="600"
         WindowStartupLocation="CenterOwner"
         FlowDirection="RightToLeft"
-        Background="#F5F5F5"
+        Background="{DynamicResource WindowBackground}"
         ResizeMode="NoResize">
 
     <Grid Margin="20">
@@ -22,72 +22,128 @@
                    Text="بيانات المجموعة"
                    FontSize="24"
                    FontWeight="Bold"
-                   Margin="0,0,0,20"/>
+                   Margin="0,0,0,20"
+                   Foreground="{DynamicResource TextPrimary}"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <TextBlock Text="اسم المجموعة" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBox x:Name="txtGroupName"
-                         Padding="10"
-                         FontSize="14"
-                         Margin="0,0,0,15"/>
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="اسم المجموعة" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <TextBox x:Name="txtGroupName"
+                             Padding="10"
+                             FontSize="14"
+                             Margin="0,0,0,15"
+                             Foreground="#2196F3"
+                             FontWeight="SemiBold"
+                             Background="{DynamicResource InputBackground}"
+                             BorderBrush="{DynamicResource InputBorder}"/>
+                </StackPanel>
 
-                <TextBlock Text="حالة المجموعة" FontWeight="Bold" Margin="0,0,0,5"/>
-                <ComboBox x:Name="cmbStatus"
-                          Padding="10"
-                          FontSize="14"
-                          Margin="0,0,0,15"/>
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="حالة المجموعة" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <ComboBox x:Name="cmbStatus"
+                              Padding="10"
+                              FontSize="14"
+                              Margin="0,0,0,15"
+                              Foreground="#FFC107"
+                              FontWeight="SemiBold"
+                              Background="{DynamicResource InputBackground}"
+                              BorderBrush="{DynamicResource InputBorder}"/>
+                </StackPanel>
 
                 <CheckBox x:Name="chkRequiresCashWallet"
                           Content="تتطلب محفظة كاش (تجديد كل 60 يوم)"
                           FontWeight="Bold"
                           Margin="0,0,0,15"
                           Checked="ChkRequiresCashWallet_Changed"
-                          Unchecked="ChkRequiresCashWallet_Changed"/>
+                          Unchecked="ChkRequiresCashWallet_Changed"
+                          Foreground="{DynamicResource TextPrimary}"/>
 
-                <TextBlock x:Name="lblLastRenewed" Text="آخر تجديد" FontWeight="Bold" Margin="0,0,0,5"/>
-                <DatePicker x:Name="dtpLastRenewed"
-                            Padding="10"
-                            FontSize="14"
-                            Margin="0,0,0,15"/>
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock x:Name="lblLastRenewed" Text="آخر تجديد" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <DatePicker x:Name="dtpLastRenewed"
+                                Padding="10"
+                                FontSize="14"
+                                Margin="0,0,0,15"
+                                Foreground="#2196F3"
+                                FontWeight="SemiBold"
+                                Background="{DynamicResource InputBackground}"
+                                BorderBrush="{DynamicResource InputBorder}"/>
+                </StackPanel>
+                
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="التجديد التالي" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <DatePicker x:Name="dpNextRenewal"
+                                Padding="10"
+                                FontSize="14"
+                                Margin="0,0,0,15"
+                                Foreground="#2196F3"
+                                FontWeight="SemiBold"
+                                Background="{DynamicResource InputBackground}"
+                                BorderBrush="{DynamicResource InputBorder}"/>
+                </StackPanel>
 
-                <TextBlock Text="الموظف المسؤول (اختياري)" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBox x:Name="txtEmployee"
-                         Padding="10"
-                         FontSize="14"
-                         Margin="0,0,0,15"/>
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="الموظف المسؤول (اختياري)" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <TextBox x:Name="txtEmployee"
+                             Padding="10"
+                             FontSize="14"
+                             Margin="0,0,0,15"
+                             Foreground="#2196F3"
+                             FontWeight="SemiBold"
+                             Background="{DynamicResource InputBackground}"
+                             BorderBrush="{DynamicResource InputBorder}"/>
+                </StackPanel>
 
-                <TextBlock Text="العميل المُسلم له (اختياري)" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBox x:Name="txtCustomer"
-                         Padding="10"
-                         FontSize="14"
-                         Margin="0,0,0,15"/>
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="العميل المُسلم له (اختياري)" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <TextBox x:Name="txtCustomer"
+                             Padding="10"
+                             FontSize="14"
+                             Margin="0,0,0,15"
+                             Foreground="#2196F3"
+                             FontWeight="SemiBold"
+                             Background="{DynamicResource InputBackground}"
+                             BorderBrush="{DynamicResource InputBorder}"/>
+                </StackPanel>
 
-                <TextBlock Text="موعد التسليم المتوقع (اختياري)" FontWeight="Bold" Margin="0,0,0,5"/>
-                <DatePicker x:Name="dtpHandoverDate"
-                            Padding="10"
-                            FontSize="14"
-                            Margin="0,0,0,15"/>
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="موعد التسليم المتوقع (اختياري)" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <DatePicker x:Name="dtpHandoverDate"
+                                Padding="10"
+                                FontSize="14"
+                                Margin="0,0,0,15"
+                                Foreground="#FF9800"
+                                FontWeight="SemiBold"
+                                Background="{DynamicResource InputBackground}"
+                                BorderBrush="{DynamicResource InputBorder}"/>
+                </StackPanel>
 
                 <CheckBox x:Name="chkIsHandedOver"
                           Content="تم التسليم بالفعل"
                           FontWeight="Bold"
-                          Margin="0,0,0,15"/>
+                          Margin="0,0,0,15"
+                          Foreground="{DynamicResource TextPrimary}"/>
 
                 <CheckBox x:Name="chkIsBusinessGroup"
                           Content="مجموعة بيزنس (Business Group)"
                           FontWeight="Bold"
-                          Margin="0,0,0,15"/>
+                          Margin="0,0,0,15"
+                          Foreground="{DynamicResource TextPrimary}"/>
 
-                <TextBlock Text="تفاصيل إضافية (اختياري)" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBox x:Name="txtAdditionalDetails"
-                         Padding="10"
-                         FontSize="14"
-                         Height="80"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         VerticalScrollBarVisibility="Auto"
-                         Margin="0,0,0,15"/>
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="تفاصيل إضافية (اختياري)" FontWeight="Bold" Margin="0,0,0,5" Foreground="{DynamicResource TextPrimary}"/>
+                    <TextBox x:Name="txtAdditionalDetails"
+                             Padding="10"
+                             FontSize="14"
+                             Height="80"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             VerticalScrollBarVisibility="Auto"
+                             Background="{DynamicResource InputBackground}"
+                             Foreground="{DynamicResource TextPrimary}"
+                             BorderBrush="{DynamicResource InputBorder}"/>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 
