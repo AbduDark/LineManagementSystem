@@ -105,18 +105,19 @@
                 <DropShadowEffect Color="Black" Opacity="0.1" BlurRadius="10" ShadowDepth="3"/>
             </Border.Effect>
             <DataGrid ItemsSource="{Binding SearchResults}"
+                      SelectedItem="{Binding SelectedResult}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
+                      IsReadOnly="True"
                       SelectionMode="Single"
                       Background="Transparent"
                       BorderThickness="0"
                       GridLinesVisibility="Horizontal"
                       HorizontalGridLinesBrush="#ECEFF1"
-                      RowHeight="45"
+                      RowHeight="70"
                       HeadersVisibility="Column"
                       CanUserResizeRows="False"
-                      IsReadOnly="True"
-                      MouseDoubleClick="DataGrid_MouseDoubleClick">
+                      AlternatingRowBackground="#FAFAFA">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="فتح / تعديل" 
@@ -172,21 +173,23 @@
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="النوع" Binding="{Binding Type}" Width="120">
+                    <DataGridTextColumn Header="النوع" Binding="{Binding Type}" Width="70" FontSize="13">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="FontWeight" Value="Bold"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Foreground" Value="#E91E63"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Foreground" Value="#1976D2"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="الاسم" Binding="{Binding Name}" Width="*">
+                    <DataGridTextColumn Header="الاسم" Binding="{Binding Name}" Width="180" FontSize="14">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="FontWeight" Value="SemiBold"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#212121"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -194,65 +197,198 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding PhoneNumber}" 
+                                           FontSize="13"
                                            FontWeight="Bold"
                                            VerticalAlignment="Center"
-                                           Foreground="{Binding ProviderColor}"/>
+                                           HorizontalAlignment="Center"
+                                           Foreground="#D32F2F"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="الرقم القومي" Binding="{Binding NationalId}" Width="140">
+                    <DataGridTextColumn Header="الرقم القومي" Binding="{Binding NationalId}" Width="130" FontSize="12">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
                                 <Setter Property="Foreground" Value="#546E7A"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="ID داخلي" Binding="{Binding InternalId}" Width="100">
+                    <DataGridTextColumn Header="ID داخلي" Binding="{Binding InternalId}" Width="90" FontSize="12">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
                                 <Setter Property="Foreground" Value="#757575"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="المجموعة" Binding="{Binding GroupName}" Width="150">
+                    <DataGridTextColumn Header="المجموعة" Binding="{Binding GroupName}" Width="200" FontSize="13">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Setter Property="Foreground" Value="#43A047"/>
+                                <Setter Property="Foreground" Value="#424242"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Padding" Value="5"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Header="المزود" Width="100">
+                    <DataGridTemplateColumn Header="مزود اتصالات" Width="110">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Provider}" 
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center"
-                                           Foreground="{Binding ProviderColor}"/>
+                                <Border CornerRadius="5" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Provider}" Value="Vodafone">
+                                                    <Setter Property="Background" Value="#FFEBEE"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Provider}" Value="Etisalat">
+                                                    <Setter Property="Background" Value="#E8F5E9"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Provider}" Value="We">
+                                                    <Setter Property="Background" Value="#F3E5F5"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Provider}" Value="Orange">
+                                                    <Setter Property="Background" Value="#FFF3E0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Provider}" Value="Vodafone">
+                                                        <Setter Property="Text" Value="فودافون"/>
+                                                        <Setter Property="Foreground" Value="#C62828"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Provider}" Value="Etisalat">
+                                                        <Setter Property="Text" Value="اتصالات"/>
+                                                        <Setter Property="Foreground" Value="#2E7D32"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Provider}" Value="We">
+                                                        <Setter Property="Text" Value="وي"/>
+                                                        <Setter Property="Foreground" Value="#6A1B9A"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Provider}" Value="Orange">
+                                                        <Setter Property="Text" Value="أورانج"/>
+                                                        <Setter Property="Foreground" Value="#EF6C00"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="محفظة كاش" Binding="{Binding CashWalletNumber}" Width="120">
+                    <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="90" FontSize="12">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Foreground" Value="#00897B"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#546E7A"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="التفاصيل" Binding="{Binding Details}" Width="200">
+                    <DataGridTemplateColumn Header="محفظة كاش" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#E8F5E9" CornerRadius="8" Padding="6,3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding HasCashWallet}" 
+                                               FontSize="11" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#2E7D32"
+                                               HorizontalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="عدد الخطوط" Binding="{Binding LineCount}" Width="90" FontSize="13">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#1976D2"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="أخر تجديد" Binding="{Binding LastRenewal}" Width="110" FontSize="11">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#757575"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="التجديد القادم" Binding="{Binding NextRenewal}" Width="110" FontSize="11">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#FF6F00"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="الأيام المتبقية" Binding="{Binding RemainingDays}" Width="100" FontSize="13">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#D32F2F"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="الموظف المسؤول" Binding="{Binding Employee}" Width="130" FontSize="12">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#424242"/>
                                 <Setter Property="TextWrapping" Value="Wrap"/>
-                                <Setter Property="Foreground" Value="#616161"/>
-                                <Setter Property="FontSize" Value="12"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Header="العميل" Binding="{Binding Customer}" Width="130" FontSize="12">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#424242"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="التفاصيل" Width="80">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="عرض" 
+                                        Command="{Binding DataContext.ViewDetailsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
+                                        CommandParameter="{Binding}"
+                                        Background="#9C27B0"
+                                        Foreground="White"
+                                        FontWeight="Bold"
+                                        FontSize="11"
+                                        Padding="8,4"
+                                        BorderThickness="0"
+                                        Cursor="Hand">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                    CornerRadius="4"
+                                                    Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
