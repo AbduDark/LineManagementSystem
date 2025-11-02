@@ -169,7 +169,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Background" Value="#20000000"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
             </Trigger>
         </Style.Triggers>
@@ -216,7 +216,7 @@
                 <Setter Property="Background" Value="{DynamicResource DataGridRowHover}"/>
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Background" Value="#20000000"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
             </Trigger>
             <MultiTrigger>
@@ -224,7 +224,7 @@
                     <Condition Property="IsSelected" Value="True"/>
                     <Condition Property="IsMouseOver" Value="True"/>
                 </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Background" Value="#30000000"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
             </MultiTrigger>
         </Style.Triggers>
