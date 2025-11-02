@@ -53,4 +53,15 @@ public partial class ProviderGroupsWindow : Window
     {
         this.Close();
     }
+
+    private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (_viewModel.SelectedGroup != null)
+        {
+            if (_viewModel.EditGroupCommand.CanExecute(null))
+            {
+                _viewModel.EditGroupCommand.Execute(null);
+            }
+        }
+    }
 }

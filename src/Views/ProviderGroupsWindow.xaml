@@ -121,7 +121,9 @@
                       HeadersVisibility="Column"
                       CanUserResizeRows="False"
                       AlternatingRowBackground="{DynamicResource DataGridAlternateRow}"
-                      KeyDown="DataGrid_KeyDown">
+                      KeyDown="DataGrid_KeyDown"
+                      IsReadOnly="True"
+                      MouseDoubleClick="DataGrid_MouseDoubleClick">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="الشعار" Width="80">
                         <DataGridTemplateColumn.CellTemplate>

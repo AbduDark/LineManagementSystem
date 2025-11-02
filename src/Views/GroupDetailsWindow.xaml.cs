@@ -135,4 +135,15 @@ public partial class GroupDetailsWindow : Window
         base.OnClosed(e);
         _alertService.CheckForAlerts();
     }
+
+    private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (_viewModel.SelectedLine != null)
+        {
+            if (_viewModel.EditLineCommand.CanExecute(null))
+            {
+                _viewModel.EditLineCommand.Execute(null);
+            }
+        }
+    }
 }

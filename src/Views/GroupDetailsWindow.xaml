@@ -249,7 +249,9 @@
                       RowHeight="60"
                       HeadersVisibility="Column"
                       CanUserResizeRows="False"
-                      AlternatingRowBackground="{DynamicResource DataGridAlternateRow}">
+                      AlternatingRowBackground="{DynamicResource DataGridAlternateRow}"
+                      IsReadOnly="True"
+                      MouseDoubleClick="DataGrid_MouseDoubleClick">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="اسم الشخص" Binding="{Binding Name}" Width="*" FontSize="14">
                         <DataGridTextColumn.ElementStyle>
