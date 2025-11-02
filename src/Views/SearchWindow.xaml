@@ -89,28 +89,6 @@
                             Cursor="Hand"/>
                 </Grid>
 
-                <WrapPanel Orientation="Horizontal" Margin="0,15,0,0">
-                    <Button Content="📊 تصدير Excel" 
-                            Click="ExportExcel_Click"
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            Padding="15,8"
-                            Margin="0,0,10,0"
-                            Background="#43A047"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Cursor="Hand"/>
-                    <Button Content="📑 تصدير PDF" 
-                            Click="ExportPDF_Click"
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            Padding="15,8"
-                            Background="#E91E63"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Cursor="Hand"/>
-                </WrapPanel>
-
                 <TextBlock Text="{Binding SearchResults.Count, StringFormat='عدد النتائج: {0}'}"
                           FontSize="14"
                           Foreground="#666"

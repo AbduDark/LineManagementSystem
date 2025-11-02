@@ -54,24 +54,6 @@ public partial class ProviderGroupsWindow : Window
         this.Close();
     }
 
-    private void ExportExcel_Click(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show(
-            $"قريباً: تصدير مجموعات {_provider.GetArabicName()} إلى Excel\n\nسيتم تصدير جميع المجموعات والخطوط بتنسيق احترافي",
-            "ميزة قادمة",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
-    }
-
-    private void ExportPDF_Click(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show(
-            $"قريباً: تصدير مجموعات {_provider.GetArabicName()} إلى PDF\n\nسيتم إنشاء تقرير PDF شامل",
-            "ميزة قادمة",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
-    }
-
     private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         if (_viewModel.SelectedGroup != null)

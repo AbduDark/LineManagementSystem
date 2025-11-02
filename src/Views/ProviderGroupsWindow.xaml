@@ -78,58 +78,26 @@
                 <DropShadowEffect Color="Black" Opacity="0.1" BlurRadius="5" ShadowDepth="2"/>
             </Border.Effect>
             <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,20">
-                    <Button Content="+ إضافة مجموعة جديدة" 
-                            Command="{Binding AddGroupCommand}"
-                            FontSize="18"
-                            FontWeight="Bold"
-                            Padding="25,15"
-                            Background="#4CAF50"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Cursor="Hand"
-                            HorizontalAlignment="Center">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" 
-                                        CornerRadius="12"
-                                        Padding="{TemplateBinding Padding}">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="Black" Opacity="0.2" BlurRadius="10" ShadowDepth="3"/>
-                                    </Border.Effect>
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Opacity" Value="0.9"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-
-                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
-                        <Button Content="📊 تصدير Excel" 
-                                Click="ExportExcel_Click"
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Padding="15,8"
-                                Margin="0,0,10,0"
-                                Background="#43A047"
-                                Foreground="White"
-                                BorderThickness="0"
-                                Cursor="Hand"/>
-                        <Button Content="📑 تصدير PDF" 
-                                Click="ExportPDF_Click"
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Padding="15,8"
-                                Background="#E91E63"
-                                Foreground="White"
-                                BorderThickness="0"
-                                Cursor="Hand"/>
-                    </WrapPanel>
-                </StackPanel>
+                <Button Content="+ إضافة مجموعة جديدة"
+                        Style="{StaticResource ActionButton}"
+                        Background="#4CAF50"
+                        Command="{Binding AddGroupCommand}"/>
+                <Button Content="تعديل المجموعة"
+                        Style="{StaticResource ActionButton}"
+                        Background="#2196F3"
+                        Command="{Binding EditGroupCommand}"/>
+                <Button Content="حذف المجموعة"
+                        Style="{StaticResource ActionButton}"
+                        Background="#F44336"
+                        Command="{Binding DeleteGroupCommand}"/>
+                <Button Content="تجديد الصلاحية (60 يوم)"
+                        Style="{StaticResource ActionButton}"
+                        Background="#FF9800"
+                        Command="{Binding RenewLicenseCommand}"/>
+                <Button Content="عرض التفاصيل والخطوط"
+                        Style="{StaticResource ActionButton}"
+                        Background="#9C27B0"
+                        Command="{Binding ViewGroupDetailsCommand}"/>
             </StackPanel>
         </Border>
 

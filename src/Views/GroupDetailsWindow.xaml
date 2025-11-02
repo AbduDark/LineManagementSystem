@@ -237,166 +237,107 @@
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-                    <Button Content="♻ ضبط الكل مع محفظة" 
-                            Command="{Binding SetAllLinesWithWalletCommand}"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Padding="20,12"
-                            Margin="10,0,0,0"
-                            Background="#00897B"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Cursor="Hand">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" 
-                                        CornerRadius="10"
-                                        Padding="{TemplateBinding Padding}">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="Black" Opacity="0.2" BlurRadius="10" ShadowDepth="3"/>
-                                    </Border.Effect>
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Opacity" Value="0.9"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-
-                    <Button Content="📊 Excel" 
-                            Click="ExportExcel_Click"
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            Padding="15,8"
-                            Margin="10,0,0,0"
-                            Background="#43A047"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Cursor="Hand"/>
-                    <Button Content="📑 PDF" 
-                            Click="ExportPDF_Click"
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            Padding="15,8"
-                            Margin="5,0,0,0"
-                            Background="#E91E63"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Cursor="Hand"/>
-                </StackPanel>
-
-                <DataGrid Grid.Row="1" ItemsSource="{Binding Lines}"
-                          SelectedItem="{Binding SelectedLine}"
-                          AutoGenerateColumns="False"
-                          CanUserAddRows="False"
-                          SelectionMode="Single"
-                          Background="Transparent"
-                          BorderThickness="0"
-                          GridLinesVisibility="Horizontal"
-                          HorizontalGridLinesBrush="{DynamicResource DataGridGridLines}"
-                          RowHeight="60"
-                          HeadersVisibility="Column"
-                          CanUserResizeRows="False"
-                          AlternatingRowBackground="{DynamicResource DataGridAlternateRow}"
-                          IsReadOnly="True"
-                          MouseDoubleClick="DataGrid_MouseDoubleClick">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="اسم الشخص" Binding="{Binding Name}" Width="*" FontSize="14">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="الرقم القومي" Binding="{Binding NationalId}" Width="130" FontSize="13">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Foreground" Value="#546E7A"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTemplateColumn Header="رقم الخط" Width="120">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding PhoneNumber}" 
-                                               FontSize="13"
-                                               FontWeight="Bold"
-                                               VerticalAlignment="Center"
-                                               Foreground="{Binding Converter={StaticResource PhoneLineToColorConverter}}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="ID داخلي" Binding="{Binding InternalId}" Width="100" FontSize="13">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Foreground" Value="#757575"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTemplateColumn Header="محفظة كاش" Width="100">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox IsChecked="{Binding HasCashWallet, Mode=OneWay}" 
-                                              IsEnabled="False" 
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="رقم المحفظة" Binding="{Binding CashWalletNumber}" Width="120" FontSize="13">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Foreground" Value="#00897B"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="التفاصيل" Binding="{Binding Details}" Width="250" FontSize="12">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
-                                    <Setter Property="Foreground" Value="#616161"/>
-                                    <Setter Property="Padding" Value="5"/>
-                                    <Setter Property="ToolTip" Value="{Binding Details}"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTemplateColumn Header="مستوى التأكيد" Width="120">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevelToColor}}" Margin="2" Visibility="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevel1Vis}}"/>
-                                        <TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevelToColor}}" Margin="2" Visibility="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevel2Vis}}"/>
-                                        <TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevelToColor}}" Margin="2" Visibility="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevel3Vis}}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="تاريخ الإنشاء" Binding="{Binding CreatedAt, StringFormat='yyyy-MM-dd HH:mm'}" Width="140" FontSize="12">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Foreground" Value="#9E9E9E"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+            <DataGrid ItemsSource="{Binding Lines}"
+                      SelectedItem="{Binding SelectedLine}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      SelectionMode="Single"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="{DynamicResource DataGridGridLines}"
+                      RowHeight="60"
+                      HeadersVisibility="Column"
+                      CanUserResizeRows="False"
+                      AlternatingRowBackground="{DynamicResource DataGridAlternateRow}"
+                      IsReadOnly="True"
+                      MouseDoubleClick="DataGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="اسم الشخص" Binding="{Binding Name}" Width="*" FontSize="14">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="الرقم القومي" Binding="{Binding NationalId}" Width="130" FontSize="13">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#546E7A"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="رقم الخط" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PhoneNumber}" 
+                                           FontSize="13"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center"
+                                           Foreground="{Binding Converter={StaticResource PhoneLineToColorConverter}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="ID داخلي" Binding="{Binding InternalId}" Width="100" FontSize="13">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#757575"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="محفظة كاش" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding HasCashWallet, Mode=OneWay}" 
+                                          IsEnabled="False" 
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="رقم المحفظة" Binding="{Binding CashWalletNumber}" Width="120" FontSize="13">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#00897B"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="التفاصيل" Binding="{Binding Details}" Width="250" FontSize="12">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Foreground" Value="#616161"/>
+                                <Setter Property="Padding" Value="5"/>
+                                <Setter Property="ToolTip" Value="{Binding Details}"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="مستوى التأكيد" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevelToColor}}" Margin="2" Visibility="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevel1Vis}}"/>
+                                    <TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevelToColor}}" Margin="2" Visibility="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevel2Vis}}"/>
+                                    <TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevelToColor}}" Margin="2" Visibility="{Binding ConfirmationLevel, Converter={StaticResource ConfirmLevel3Vis}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="تاريخ الإنشاء" Binding="{Binding CreatedAt, StringFormat='yyyy-MM-dd HH:mm'}" Width="140" FontSize="12">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#9E9E9E"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Border>
     </Grid>
 </Window>

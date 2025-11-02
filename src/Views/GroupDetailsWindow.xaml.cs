@@ -136,24 +136,6 @@ public partial class GroupDetailsWindow : Window
         _alertService.CheckForAlerts();
     }
 
-    private void ExportExcel_Click(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show(
-            $"قريباً: تصدير خطوط مجموعة '{_viewModel.Group.Name}' إلى Excel\n\nسيتم تصدير جميع بيانات الخطوط بتنسيق احترافي",
-            "ميزة قادمة",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
-    }
-
-    private void ExportPDF_Click(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show(
-            $"قريباً: تصدير خطوط مجموعة '{_viewModel.Group.Name}' إلى PDF\n\nسيتم إنشاء تقرير PDF مفصل",
-            "ميزة قادمة",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
-    }
-
     private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         if (_viewModel.SelectedLine != null)

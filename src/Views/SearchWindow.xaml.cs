@@ -84,24 +84,6 @@ public partial class SearchWindow : Window
         }
     }
 
-    private void ExportExcel_Click(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show(
-            "قريباً: تصدير نتائج البحث إلى Excel\n\nسيتم تصدير جميع النتائج المعروضة بتنسيق احترافي",
-            "ميزة قادمة",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
-    }
-
-    private void ExportPDF_Click(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show(
-            "قريباً: تصدير نتائج البحث إلى PDF\n\nسيتم إنشاء تقرير PDF بتنسيق احترافي",
-            "ميزة قادمة",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
-    }
-
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         this.Close();
