@@ -86,68 +86,20 @@ public partial class SearchWindow : Window
 
     private void ExportExcel_Click(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            var saveDialog = new Microsoft.Win32.SaveFileDialog
-            {
-                Filter = "Excel Files|*.xlsx",
-                FileName = $"نتائج_البحث_{DateTime.Now:yyyy-MM-dd}.xlsx"
-            };
-
-            if (saveDialog.ShowDialog() == true)
-            {
-                var exportService = new ExportService();
-                var groups = _viewModel.SearchResults.OfType<LineGroup>().ToList();
-                
-                if (groups.Any())
-                {
-                    exportService.ExportGroupsToExcel(groups, saveDialog.FileName);
-                    MessageBox.Show("تم التصدير بنجاح!", "نجح", MessageBoxButton.OK, MessageBoxImage.Information);
-                    System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{saveDialog.FileName}\"");
-                }
-                else
-                {
-                    MessageBox.Show("لا توجد مجموعات للتصدير", "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"حدث خطأ أثناء التصدير: {ex.Message}", "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        MessageBox.Show(
+            "قريباً: تصدير نتائج البحث إلى Excel\n\nسيتم تصدير جميع النتائج المعروضة بتنسيق احترافي",
+            "ميزة قادمة",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
     }
 
     private void ExportPDF_Click(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            var saveDialog = new Microsoft.Win32.SaveFileDialog
-            {
-                Filter = "PDF Files|*.pdf",
-                FileName = $"نتائج_البحث_{DateTime.Now:yyyy-MM-dd}.pdf"
-            };
-
-            if (saveDialog.ShowDialog() == true)
-            {
-                var exportService = new ExportService();
-                var groups = _viewModel.SearchResults.OfType<LineGroup>().ToList();
-                
-                if (groups.Any())
-                {
-                    exportService.ExportGroupsToPDF(groups, saveDialog.FileName);
-                    MessageBox.Show("تم التصدير بنجاح!", "نجح", MessageBoxButton.OK, MessageBoxImage.Information);
-                    System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{saveDialog.FileName}\"");
-                }
-                else
-                {
-                    MessageBox.Show("لا توجد مجموعات للتصدير", "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"حدث خطأ أثناء التصدير: {ex.Message}", "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        MessageBox.Show(
+            "قريباً: تصدير نتائج البحث إلى PDF\n\nسيتم إنشاء تقرير PDF بتنسيق احترافي",
+            "ميزة قادمة",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)

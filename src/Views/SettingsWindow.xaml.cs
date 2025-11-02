@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using LineManagementSystem.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace LineManagementSystem.Views;
 
@@ -31,7 +30,7 @@ public partial class SettingsWindow : Window
         _backupService = new BackupService();
         UpdateThemeText();
         UpdateBackupStatus();
-
+        
         AutoBackupToggle.IsChecked = _backupService.IsAutoBackupEnabled;
     }
 
@@ -81,9 +80,9 @@ public partial class SettingsWindow : Window
             {
                 var customName = Path.GetFileNameWithoutExtension(dialog.FileName);
                 var backupPath = await _backupService.CreateBackup(customName);
-
+                
                 File.Copy(backupPath, dialog.FileName, overwrite: true);
-
+                
                 UpdateBackupStatus();
                 MessageBox.Show($"تم إنشاء النسخة الاحتياطية بنجاح!\n\nالمسار:\n{dialog.FileName}", 
                     "نجح", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -121,7 +120,7 @@ public partial class SettingsWindow : Window
             if (dialog.ShowDialog() == true)
             {
                 await _backupService.RestoreBackup(dialog.FileName);
-
+                
                 MessageBox.Show(
                     "تمت استعادة البيانات بنجاح!\n\nسيتم إعادة تشغيل التطبيق الآن.",
                     "نجح",
@@ -147,7 +146,7 @@ public partial class SettingsWindow : Window
             {
                 Directory.CreateDirectory(_backupService.BackupDirectory);
             }
-
+            
             Process.Start("explorer.exe", _backupService.BackupDirectory);
         }
         catch (Exception ex)
@@ -160,7 +159,7 @@ public partial class SettingsWindow : Window
     private void DeleteOldBackups_Click(object sender, RoutedEventArgs e)
     {
         var backups = _backupService.GetBackupList();
-
+        
         if (backups.Length == 0)
         {
             MessageBox.Show("لا توجد نسخ احتياطية للحذف", 
@@ -184,7 +183,7 @@ public partial class SettingsWindow : Window
                 {
                     _backupService.DeleteBackup(backup);
                 }
-
+                
                 UpdateBackupStatus();
                 MessageBox.Show($"تم حذف {toDelete.Length} نسخة احتياطية قديمة", 
                     "نجح", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -220,7 +219,7 @@ public partial class SettingsWindow : Window
             "ميزة قادمة",
             MessageBoxButton.OK,
             MessageBoxImage.Information);
-
+        
         await System.Threading.Tasks.Task.CompletedTask;
     }
 
@@ -231,7 +230,7 @@ public partial class SettingsWindow : Window
             "ميزة قادمة",
             MessageBoxButton.OK,
             MessageBoxImage.Information);
-
+        
         await System.Threading.Tasks.Task.CompletedTask;
     }
 
@@ -274,7 +273,7 @@ public partial class SettingsWindow : Window
             MessageBox.Show($"خطأ في جلب الإحصائيات:\n{ex.Message}", 
                 "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-
+        
         await System.Threading.Tasks.Task.CompletedTask;
     }
 
