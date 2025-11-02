@@ -101,6 +101,11 @@ LineManagementSystem/
 ## Recent Changes
 
 ### November 2, 2025 (Evening Update - Latest)
+- ✅ **Enhanced details display in tables**: 
+  - Added "التفاصيل الإضافية" column (250px width) in Groups table to show AdditionalDetails field
+  - Expanded "التفاصيل" column (250px width) in Lines table for better visibility
+  - Added text wrapping and tooltips for easy reading
+  - Increased row height (Groups: 60→80px, Lines: 40→60px) for multi-line text display
 - ✅ **Added Enter key shortcut in Groups Window**: Press Enter on selected group → Opens group details window automatically
 - ✅ **Auto-focus on Phone Number field**: When opening line entry form, cursor automatically goes to Phone Number field (instead of Name)
 - ✅ **Fixed Entity Framework tracking bug**: Added ChangeTracker.Clear() in UpdateLine to prevent duplicate entity tracking errors
