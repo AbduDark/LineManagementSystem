@@ -26,11 +26,12 @@ public static class TelecomProviderExtensions
     {
         return provider switch
         {
-            TelecomProvider.Vodafone => "#E60000",    // أحمر فودافون
-            TelecomProvider.Etisalat => "#7FBA00",    // أخضر اتصالات
-            TelecomProvider.We => "#6A1B9A",          // بنفسجي وي
-            TelecomProvider.Orange => "#FF7900",      // برتقالي أورانج
-            _ => "#000000"
+            TelecomProvider.Vodafone => "#E60000",  // أحمر فودافون
+            TelecomProvider.Etisalat => "#007E3A",  // أخضر اتصالات
+            TelecomProvider.We => "#60269E", // بنفسجي وي
+            TelecomProvider.Orange => "#FF7900", // برتقالي أورانج
+            _ => "#000000"                          // افتراضي: أسود
+
         };
     }
 
