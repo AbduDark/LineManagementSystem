@@ -36,16 +36,16 @@ public class AlertService
             foreach (var group in groups)
             {
                 CheckAndCreateAlert(context, group, AlertType.RenewalNeeded, 
-                    group.RequiresCashWallet && group.NeedsRenewalAlert());
+                    group.RequiresCashWallet && group.NeedsRenewalAlert);
                     
                 CheckAndCreateAlert(context, group, AlertType.RenewalExpired, 
-                    group.RequiresCashWallet && group.IsRenewalExpired());
+                    group.RequiresCashWallet && group.IsRenewalExpired);
                     
                 CheckAndCreateAlert(context, group, AlertType.HandoverDue, 
-                    group.NeedsHandoverAlert());
+                    group.NeedsHandoverAlert);
                     
                 CheckAndCreateAlert(context, group, AlertType.HandoverOverdue, 
-                    group.IsHandoverOverdue());
+                    group.IsHandoverOverdue);
             }
 
             context.SaveChanges();

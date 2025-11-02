@@ -67,7 +67,7 @@ public class GroupService
     public void AddLineToGroup(int groupId, PhoneLine line)
     {
         var group = GetGroupById(groupId);
-        if (group != null && group.CanAddMoreLines())
+        if (group != null && group.CanAddMoreLines)
         {
             line.GroupId = groupId;
             line.CreatedAt = DateTime.Now;

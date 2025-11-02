@@ -110,8 +110,8 @@ public class SearchViewModel : BaseViewModel
                     Type = "مجموعة",
                     GroupName = group.Name,
                     Provider = group.Provider.GetArabicName(),
-                    LineCount = group.GetLineCount(),
-                    Details = $"عدد الخطوط: {group.GetLineCount()} من {group.MaxLines}"
+                    LineCount = group.GetLineCount,
+                    Details = $"عدد الخطوط: {group.GetLineCount} من {group.MaxLines}"
                 });
 
                 // إضافة كل الخطوط في المجموعة

@@ -18,37 +18,46 @@ public class Alert
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public bool IsRead { get; set; }
 
-    public string GetArabicMessage()
+    public string GetArabicMessage
     {
-        if (Group == null) return Message;
-
-        return Type switch
+        get
         {
-            AlertType.RenewalNeeded => $"المجموعة '{Group.Name}' تحتاج تجديد خلال {Group.GetRemainingDaysForRenewal()} يوم",
-            AlertType.RenewalExpired => $"صلاحية المجموعة '{Group.Name}' منتهية! يرجى التجديد فوراً",
-            AlertType.HandoverDue => $"موعد تسليم المجموعة '{Group.Name}' للعميل '{Group.AssignedCustomer}' خلال {Group.GetDaysUntilHandover()} يوم",
-            AlertType.HandoverOverdue => $"تأخر تسليم المجموعة '{Group.Name}' للعميل '{Group.AssignedCustomer}'!",
-            _ => Message
-        };
+            if (Group == null) return Message;
+
+            return Type switch
+            {
+                AlertType.RenewalNeeded => $"المجموعة '{Group.Name}' تحتاج تجديد خلال {Group.GetRemainingDaysForRenewal} يوم",
+                AlertType.RenewalExpired => $"صلاحية المجموعة '{Group.Name}' منتهية! يرجى التجديد فوراً",
+                AlertType.HandoverDue => $"موعد تسليم المجموعة '{Group.Name}' للعميل '{Group.AssignedCustomer}' خلال {Group.GetDaysUntilHandover} يوم",
+                AlertType.HandoverOverdue => $"تأخر تسليم المجموعة '{Group.Name}' للعميل '{Group.AssignedCustomer}'!",
+                _ => Message
+            };
+        }
     }
 
-    public string GetColorHex()
+    public string GetColorHex
     {
-        return Type switch
+        get
         {
-            AlertType.RenewalNeeded => "#FFC107",
-            AlertType.RenewalExpired => "#F44336",
-            AlertType.HandoverDue => "#2196F3",
-            AlertType.HandoverOverdue => "#F44336",
-            _ => "#9E9E9E"
-        };
+            return Type switch
+            {
+                AlertType.RenewalNeeded => "#FFC107",
+                AlertType.RenewalExpired => "#F44336",
+                AlertType.HandoverDue => "#2196F3",
+                AlertType.HandoverOverdue => "#F44336",
+                _ => "#9E9E9E"
+            };
+        }
     }
 
-    public System.Windows.Media.Brush GetColorBrush()
+    public System.Windows.Media.Brush GetColorBrush
     {
-        var color = GetColorHex();
-        return new System.Windows.Media.SolidColorBrush(
-            (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color)
-        );
+        get
+        {
+            var color = GetColorHex;
+            return new System.Windows.Media.SolidColorBrush(
+                (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color)
+            );
+        }
     }
 }

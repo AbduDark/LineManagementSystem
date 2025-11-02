@@ -47,44 +47,56 @@ public class LineGroup
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-    public int GetLineCount() => Lines?.Count ?? 0;
+    public int GetLineCount => Lines?.Count ?? 0;
 
-    public bool CanAddMoreLines() => GetLineCount() < MaxLines;
+    public bool CanAddMoreLines => GetLineCount < MaxLines;
 
-    public int GetRemainingDaysForRenewal()
+    public int GetRemainingDaysForRenewal
     {
-        if (NextRenewalDue == null) return -1;
-        return (NextRenewalDue.Value - DateTime.Now).Days;
+        get
+        {
+            if (NextRenewalDue == null) return -1;
+            return (NextRenewalDue.Value - DateTime.Now).Days;
+        }
     }
 
-    public bool NeedsRenewalAlert()
+    public bool NeedsRenewalAlert
     {
-        var daysRemaining = GetRemainingDaysForRenewal();
-        return daysRemaining >= 0 && daysRemaining <= 7;
+        get
+        {
+            var daysRemaining = GetRemainingDaysForRenewal;
+            return daysRemaining >= 0 && daysRemaining <= 7;
+        }
     }
 
-    public bool IsRenewalExpired()
+    public bool IsRenewalExpired => GetRemainingDaysForRenewal < 0;
+
+    public int GetDaysUntilHandover
     {
-        return GetRemainingDaysForRenewal() < 0;
+        get
+        {
+            if (ExpectedHandoverDate == null) return -1;
+            return (ExpectedHandoverDate.Value - DateTime.Now).Days;
+        }
     }
 
-    public int GetDaysUntilHandover()
+    public bool NeedsHandoverAlert
     {
-        if (ExpectedHandoverDate == null) return -1;
-        return (ExpectedHandoverDate.Value - DateTime.Now).Days;
+        get
+        {
+            if (IsHandedOver || ExpectedHandoverDate == null) return false;
+            var daysUntil = GetDaysUntilHandover;
+            return daysUntil >= 0 && daysUntil <= 3;
+        }
     }
 
-    public bool NeedsHandoverAlert()
+    public bool IsHandoverOverdue
     {
-        if (IsHandedOver || ExpectedHandoverDate == null) return false;
-        var daysUntil = GetDaysUntilHandover();
-        return daysUntil >= 0 && daysUntil <= 3;
-    }
-
-    public bool IsHandoverOverdue()
-    {
-        if (IsHandedOver || ExpectedHandoverDate == null) return false;
-        return DateTime.Now > ExpectedHandoverDate.Value;
+        get
+        {
+            if (IsHandedOver || ExpectedHandoverDate == null) return false;
+            return DateTime.Now > ExpectedHandoverDate.Value;
+        }
     }
 
     public void RenewLicense()

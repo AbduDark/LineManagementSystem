@@ -54,12 +54,12 @@ public class GroupDetailsViewModel : BaseViewModel
 
         AddLineCommand = new RelayCommand(() =>
         {
-            if (Group.CanAddMoreLines())
+            if (Group.CanAddMoreLines)
             {
                 NewLine = new PhoneLine();
                 IsAddingLine = true;
             }
-        }, () => Group.CanAddMoreLines());
+        }, () => Group.CanAddMoreLines);
 
         EditLineCommand = new RelayCommand(() =>
         {
