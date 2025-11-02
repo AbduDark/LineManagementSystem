@@ -13,14 +13,14 @@ public class ProviderToLogoConverter : IValueConverter
         {
             return provider switch
             {
-                TelecomProvider.Vodafone => "/src/Resources/Images/vodafone.png",
-                TelecomProvider.Orange => "/src/Resources/Images/orange.png",
-                TelecomProvider.Etisalat => "/src/Resources/Images/etisalat.png",
-                TelecomProvider.We => "/src/Resources/Images/we.png",
-                _ => "/src/Resources/Images/vodafone.png"
+                TelecomProvider.Vodafone => "/Resources/Images/vodafone.png",
+                TelecomProvider.Orange => "/Resources/Images/orange.png",
+                TelecomProvider.Etisalat => "/Resources/Images/etisalat.png",
+                TelecomProvider.We => "/Resources/Images/we.png",
+                _ => "/Resources/Images/vodafone.png"
             };
         }
-        return "/src/Resources/Images/vodafone.png";
+        return "/Resources/Images/vodafone.png";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

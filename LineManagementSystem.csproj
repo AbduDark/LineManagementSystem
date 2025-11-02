@@ -18,7 +18,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Images\**\*" />
+    <Resource Include="src\Resources\Images\**\*">
+      <Link>Resources\Images\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Resource>
   </ItemGroup>
+
+  <Target Name="CopyImagesToOutput" AfterTargets="Build">
+    <ItemGroup>
+      <ImageFiles Include="src\Resources\Images\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ImageFiles)" DestinationFolder="$(OutputPath)Resources\Images\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Message Text="تم نسخ الأيقونات إلى مجلد الإخراج" Importance="high" />
+  </Target>
 
 </Project>

@@ -97,56 +97,193 @@
             </StackPanel>
         </Border>
 
-        <DataGrid Grid.Row="2"
-                  ItemsSource="{Binding Groups}"
-                  SelectedItem="{Binding SelectedGroup}"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  SelectionMode="Single"
-                  Background="White"
-                  BorderBrush="#DDD"
-                  BorderThickness="1"
-                  RowBackground="White"
-                  AlternatingRowBackground="#F9F9F9"
-                  Margin="20,0,20,20">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="الشعار" Width="80">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Image Source="{Binding Provider, Converter={StaticResource ProviderToLogoConverter}}" 
-                                       Width="50" Height="50" 
-                                       Margin="5"
-                                       Stretch="Uniform"
-                                       ToolTip="{Binding Provider}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="نوع" Width="60">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Source="/Resources/Images/business_group.jpg" 
-                                   Width="40" Height="40" 
-                                   Margin="2"
-                                   Stretch="Uniform"
-                                   Visibility="{Binding IsBusinessGroup, Converter={StaticResource BoolToVis}}"
-                                   ToolTip="مجموعة بيزنس"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="اسم المجموعة" Binding="{Binding Name}" Width="*" FontSize="14"/>
-                <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="100" FontSize="14"/>
-                <DataGridTextColumn Header="عدد الخطوط" Binding="{Binding GetLineCount}" Width="100" FontSize="14"/>
-                <DataGridTextColumn Header="محفظة كاش؟" Binding="{Binding RequiresCashWallet}" Width="100" FontSize="14"/>
-                <DataGridTextColumn Header="آخر تجديد" Binding="{Binding LastRenewedOn, StringFormat='yyyy-MM-dd'}" Width="120" FontSize="14"/>
-                <DataGridTextColumn Header="التجديد القادم" Binding="{Binding NextRenewalDue, StringFormat='yyyy-MM-dd'}" Width="120" FontSize="14"/>
-                <DataGridTextColumn Header="الأيام المتبقية" Binding="{Binding GetRemainingDaysForRenewal}" Width="120" FontSize="14"/>
-                <DataGridTextColumn Header="الموظف المسؤول" Binding="{Binding AssignedToEmployee}" Width="120" FontSize="14"/>
-                <DataGridTextColumn Header="العميل" Binding="{Binding AssignedCustomer}" Width="120" FontSize="14"/>
-                <DataGridTextColumn Header="موعد التسليم" Binding="{Binding ExpectedHandoverDate, StringFormat='yyyy-MM-dd'}" Width="120" FontSize="14"/>
-                <DataGridCheckBoxColumn Header="تم التسليم؟" Binding="{Binding IsHandedOver}" Width="100"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Border Grid.Row="2" 
+                Background="White" 
+                BorderBrush="#CFD8DC"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="0"
+                Margin="20,0,20,20">
+            <DataGrid ItemsSource="{Binding Groups}"
+                      SelectedItem="{Binding SelectedGroup}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      SelectionMode="Single"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="#ECEFF1"
+                      RowHeight="60"
+                      HeadersVisibility="Column"
+                      CanUserResizeRows="False"
+                      AlternatingRowBackground="#FAFAFA">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="8,5"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#E3F2FD"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F5F5F5"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="#BBDEFB"/>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#37474F"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="10,12"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                        <Setter Property="BorderBrush" Value="#455A64"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="FontSize" Value="13"/>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="الشعار" Width="80">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#F5F5F5" CornerRadius="5" Padding="5" HorizontalAlignment="Center">
+                                    <Image Source="{Binding Provider, Converter={StaticResource ProviderToLogoConverter}}" 
+                                           Width="45" Height="45" 
+                                           Stretch="Uniform"
+                                           ToolTip="{Binding Provider}"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="نوع" Width="70">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#FFF3E0" CornerRadius="5" Padding="3" HorizontalAlignment="Center"
+                                        Visibility="{Binding IsBusinessGroup, Converter={StaticResource BoolToVis}}">
+                                    <Image Source="/Resources/Images/business_group.jpg" 
+                                           Width="35" Height="35" 
+                                           Stretch="Uniform"
+                                           ToolTip="مجموعة بيزنس"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="اسم المجموعة" Binding="{Binding Name}" Width="*" FontSize="14">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="100" FontSize="13">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#546E7A"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="عدد الخطوط" Binding="{Binding GetLineCount}" Width="90" FontSize="14">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#1976D2"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="محفظة كاش" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#E8F5E9" CornerRadius="12" Padding="8,4" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding RequiresCashWallet}" 
+                                               FontSize="12" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#2E7D32"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="آخر تجديد" Binding="{Binding LastRenewedOn, StringFormat='yyyy-MM-dd'}" Width="110" FontSize="12">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#757575"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="التجديد القادم" Binding="{Binding NextRenewalDue, StringFormat='yyyy-MM-dd'}" Width="110" FontSize="12">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#FF6F00"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="الأيام المتبقية" Binding="{Binding GetRemainingDaysForRenewal}" Width="100" FontSize="13">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#D32F2F"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="الموظف المسؤول" Binding="{Binding AssignedToEmployee}" Width="120" FontSize="13">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#424242"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="العميل" Binding="{Binding AssignedCustomer}" Width="120" FontSize="13">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#424242"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="موعد التسليم" Binding="{Binding ExpectedHandoverDate, StringFormat='yyyy-MM-dd'}" Width="110" FontSize="12">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#6A1B9A"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="تم التسليم" Width="90">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsHandedOver, Mode=OneWay}" 
+                                          IsEnabled="False" 
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </Grid>
 </Window>
