@@ -113,7 +113,7 @@
                       BorderThickness="0"
                       GridLinesVisibility="Horizontal"
                       HorizontalGridLinesBrush="#ECEFF1"
-                      RowHeight="60"
+                      RowHeight="80"
                       HeadersVisibility="Column"
                       CanUserResizeRows="False"
                       AlternatingRowBackground="#FAFAFA"
@@ -283,6 +283,17 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="التفاصيل الإضافية" Binding="{Binding AdditionalDetails}" Width="250" FontSize="12">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Foreground" Value="#424242"/>
+                                <Setter Property="Padding" Value="5"/>
+                                <Setter Property="ToolTip" Value="{Binding AdditionalDetails}"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

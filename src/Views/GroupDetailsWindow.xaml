@@ -269,7 +269,7 @@
                       BorderThickness="0"
                       GridLinesVisibility="Horizontal"
                       HorizontalGridLinesBrush="#ECEFF1"
-                      RowHeight="40"
+                      RowHeight="60"
                       HeadersVisibility="Column"
                       CanUserResizeRows="False">
                 <DataGrid.Columns>
@@ -324,12 +324,14 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="التفاصيل" Binding="{Binding Details}" Width="150" FontSize="12">
+                    <DataGridTextColumn Header="التفاصيل" Binding="{Binding Details}" Width="250" FontSize="12">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                                 <Setter Property="TextWrapping" Value="Wrap"/>
                                 <Setter Property="Foreground" Value="#616161"/>
+                                <Setter Property="Padding" Value="5"/>
+                                <Setter Property="ToolTip" Value="{Binding Details}"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
