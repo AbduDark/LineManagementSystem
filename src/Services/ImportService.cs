@@ -19,6 +19,11 @@ public class ImportService
         public int NameColumn { get; set; }
         public int NationalIdColumn { get; set; }
         public int PhoneNumberColumn { get; set; }
+        public int? InternalIdColumn { get; set; }
+        public int? HasCashWalletColumn { get; set; }
+        public int? CashWalletNumberColumn { get; set; }
+        public int? LineSystemColumn { get; set; }
+        public int? DetailsColumn { get; set; }
     }
 
     public class CustomImportSettings
@@ -278,6 +283,25 @@ public class ImportService
         return totalCells > 0 && textCellCount >= totalCells / 2;
     }
 
+    public ColumnMapping? DetectAllColumns(string filePath)
+    {
+        try
+        {
+            using var workbook = new XLWorkbook(filePath);
+            var worksheet = workbook.Worksheets.FirstOrDefault();
+            if (worksheet == null) return null;
+            
+            var lastColumn = worksheet.LastColumnUsed()?.ColumnNumber() ?? 0;
+            if (lastColumn < 3) return null;
+            
+            return DetectColumns(worksheet);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     private ColumnMapping? DetectColumnsFromHeader(IXLWorksheet worksheet, int lastColumn)
     {
         var mapping = new ColumnMapping();
@@ -300,6 +324,26 @@ public class ImportService
             {
                 mapping.PhoneNumberColumn = col;
             }
+            else if (IsInternalIdHeader(header))
+            {
+                mapping.InternalIdColumn = col;
+            }
+            else if (IsCashWalletHeader(header))
+            {
+                mapping.HasCashWalletColumn = col;
+            }
+            else if (IsWalletNumberHeader(header))
+            {
+                mapping.CashWalletNumberColumn = col;
+            }
+            else if (IsLineSystemHeader(header))
+            {
+                mapping.LineSystemColumn = col;
+            }
+            else if (IsDetailsHeader(header))
+            {
+                mapping.DetailsColumn = col;
+            }
         }
 
         if (mapping.NameColumn > 0 && mapping.NationalIdColumn > 0 && mapping.PhoneNumberColumn > 0)
@@ -308,6 +352,50 @@ public class ImportService
         }
 
         return null;
+    }
+    
+    private bool IsInternalIdHeader(string header)
+    {
+        var keywords = new[] { 
+            "داخلي", "internal", "internalid", "كود", "code", "رقمداخلي"
+        };
+        return keywords.Any(keyword => header.Contains(keyword));
+    }
+    
+    private bool IsCashWalletHeader(string header)
+    {
+        var keywords = new[] { 
+            "محفظة", "wallet", "كاش", "cash", "cashwallet", "محفظةكاش"
+        };
+        var notNumberKeywords = new[] { "رقم", "number" };
+        return keywords.Any(keyword => header.Contains(keyword)) &&
+               !notNumberKeywords.Any(keyword => header.Contains(keyword));
+    }
+    
+    private bool IsWalletNumberHeader(string header)
+    {
+        var keywords = new[] { 
+            "محفظة", "wallet", "كاش", "cash"
+        };
+        var numberKeywords = new[] { "رقم", "number", "num" };
+        return keywords.Any(keyword => header.Contains(keyword)) &&
+               numberKeywords.Any(keyword => header.Contains(keyword));
+    }
+    
+    private bool IsLineSystemHeader(string header)
+    {
+        var keywords = new[] { 
+            "نظام", "system", "linesystem", "نظامالخط", "نظامخط"
+        };
+        return keywords.Any(keyword => header.Contains(keyword));
+    }
+    
+    private bool IsDetailsHeader(string header)
+    {
+        var keywords = new[] { 
+            "تفاصيل", "details", "ملاحظات", "notes", "note", "تعليق", "comment"
+        };
+        return keywords.Any(keyword => header.Contains(keyword));
     }
 
     private bool IsNameHeader(string header)

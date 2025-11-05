@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using ClosedXML.Excel;
+using LineManagementSystem.Services;
 
 namespace LineManagementSystem.Views;
 
@@ -20,11 +21,13 @@ public partial class ImportSettingsDialog : Window
 
     public ImportSettings? Settings { get; private set; }
     private readonly string _excelFilePath;
+    private readonly ImportService _importService;
 
     public ImportSettingsDialog(string excelFilePath)
     {
         InitializeComponent();
         _excelFilePath = excelFilePath;
+        _importService = new ImportService();
         LoadColumnsFromExcel();
     }
 
@@ -46,6 +49,7 @@ public partial class ImportSettingsDialog : Window
 
             var lastColumn = worksheet.LastColumnUsed()?.ColumnNumber() ?? 0;
 
+            // إنشاء قائمة الأعمدة
             var columns = new List<string>();
             for (int i = 1; i <= lastColumn; i++)
             {
@@ -60,6 +64,7 @@ public partial class ImportSettingsDialog : Window
                 }
             }
 
+            // تعبئة ComboBoxes
             NameColumnComboBox.ItemsSource = columns;
             NationalIdColumnComboBox.ItemsSource = columns;
             PhoneNumberColumnComboBox.ItemsSource = columns;
@@ -68,9 +73,74 @@ public partial class ImportSettingsDialog : Window
             CashWalletNumberColumnComboBox.ItemsSource = columns;
             LineSystemColumnComboBox.ItemsSource = columns;
 
-            NameColumnComboBox.SelectedIndex = 0;
-            if (columns.Count > 1) NationalIdColumnComboBox.SelectedIndex = 1;
-            if (columns.Count > 2) PhoneNumberColumnComboBox.SelectedIndex = 2;
+            // اكتشاف الأعمدة تلقائياً
+            var detectedMapping = _importService.DetectAllColumns(_excelFilePath);
+
+            if (detectedMapping != null)
+            {
+                // تحديد الأعمدة الأساسية تلقائياً
+                if (detectedMapping.NameColumn > 0)
+                {
+                    NameColumnComboBox.SelectedIndex = detectedMapping.NameColumn - 1;
+                }
+                
+                if (detectedMapping.NationalIdColumn > 0)
+                {
+                    NationalIdColumnComboBox.SelectedIndex = detectedMapping.NationalIdColumn - 1;
+                }
+                
+                if (detectedMapping.PhoneNumberColumn > 0)
+                {
+                    PhoneNumberColumnComboBox.SelectedIndex = detectedMapping.PhoneNumberColumn - 1;
+                }
+
+                // تحديد الأعمدة الاختيارية إن وُجدت
+                if (detectedMapping.InternalIdColumn.HasValue && detectedMapping.InternalIdColumn.Value > 0)
+                {
+                    InternalIdColumnCheckBox.IsChecked = true;
+                    InternalIdColumnComboBox.SelectedIndex = detectedMapping.InternalIdColumn.Value - 1;
+                }
+
+                if (detectedMapping.HasCashWalletColumn.HasValue && detectedMapping.HasCashWalletColumn.Value > 0)
+                {
+                    HasCashWalletColumnCheckBox.IsChecked = true;
+                    HasCashWalletColumnComboBox.SelectedIndex = detectedMapping.HasCashWalletColumn.Value - 1;
+                }
+
+                if (detectedMapping.CashWalletNumberColumn.HasValue && detectedMapping.CashWalletNumberColumn.Value > 0)
+                {
+                    CashWalletNumberColumnCheckBox.IsChecked = true;
+                    CashWalletNumberColumnComboBox.SelectedIndex = detectedMapping.CashWalletNumberColumn.Value - 1;
+                }
+
+                if (detectedMapping.LineSystemColumn.HasValue && detectedMapping.LineSystemColumn.Value > 0)
+                {
+                    LineSystemColumnCheckBox.IsChecked = true;
+                    LineSystemColumnComboBox.SelectedIndex = detectedMapping.LineSystemColumn.Value - 1;
+                }
+
+                // عرض رسالة للمستخدم
+                MessageBox.Show(
+                    "✅ تم اكتشاف الأعمدة تلقائياً!\n\n" +
+                    "يرجى مراجعة التحديدات والتأكد من صحتها قبل الاستيراد.",
+                    "اكتشاف تلقائي",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            else
+            {
+                // إذا فشل الاكتشاف، استخدم الإعدادات الافتراضية
+                NameColumnComboBox.SelectedIndex = 0;
+                if (columns.Count > 1) NationalIdColumnComboBox.SelectedIndex = 1;
+                if (columns.Count > 2) PhoneNumberColumnComboBox.SelectedIndex = 2;
+
+                MessageBox.Show(
+                    "⚠️ لم يتم اكتشاف الأعمدة تلقائياً\n\n" +
+                    "يرجى تحديد الأعمدة يدوياً",
+                    "تنبيه",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
         }
         catch (Exception ex)
         {
