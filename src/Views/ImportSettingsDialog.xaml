@@ -66,11 +66,11 @@
 
         <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <GroupBox Header="🔢 تحديد الأعمدة المطلوبة (إلزامي)" 
+                <GroupBox Header="🔢 تحديد الأعمدة (اختياري)" 
                           Margin="0,0,0,15"
                           Padding="10">
                     <StackPanel>
-                        <TextBlock Text="الأعمدة التالية إلزامية للاستيراد:"
+                        <TextBlock Text="جميع الأعمدة اختيارية - يمكنك اختيار ما تريد استيراده:"
                                    FontSize="12"
                                    Margin="0,0,0,10"
                                    FontWeight="SemiBold"/>
@@ -83,8 +83,9 @@
                             <CheckBox Grid.Column="0" 
                                       x:Name="NameColumnCheckBox"
                                       IsChecked="True" 
-                                      IsEnabled="False"
-                                      Margin="0,0,10,0"/>
+                                      Margin="0,0,10,0"
+                                      Checked="OptionalColumn_Changed"
+                                      Unchecked="OptionalColumn_Changed"/>
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="📝 اسم الشخص" FontWeight="SemiBold"/>
                                 <ComboBox x:Name="NameColumnComboBox" 
@@ -101,10 +102,11 @@
                             <CheckBox Grid.Column="0" 
                                       x:Name="NationalIdColumnCheckBox"
                                       IsChecked="True" 
-                                      IsEnabled="False"
-                                      Margin="0,0,10,0"/>
+                                      Margin="0,0,10,0"
+                                      Checked="OptionalColumn_Changed"
+                                      Unchecked="OptionalColumn_Changed"/>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Text="🆔 الرقم القومي (14 رقم)" FontWeight="SemiBold"/>
+                                <TextBlock Text="🆔 الرقم القومي" FontWeight="SemiBold"/>
                                 <ComboBox x:Name="NationalIdColumnComboBox" 
                                           Margin="0,5,0,0"
                                           SelectedIndex="1"/>
@@ -119,10 +121,11 @@
                             <CheckBox Grid.Column="0" 
                                       x:Name="PhoneNumberColumnCheckBox"
                                       IsChecked="True" 
-                                      IsEnabled="False"
-                                      Margin="0,0,10,0"/>
+                                      Margin="0,0,10,0"
+                                      Checked="OptionalColumn_Changed"
+                                      Unchecked="OptionalColumn_Changed"/>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Text="📱 رقم الخط (11 رقم)" FontWeight="SemiBold"/>
+                                <TextBlock Text="📱 رقم الخط" FontWeight="SemiBold"/>
                                 <ComboBox x:Name="PhoneNumberColumnComboBox" 
                                           Margin="0,5,0,0"
                                           SelectedIndex="2"/>

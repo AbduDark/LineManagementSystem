@@ -10,9 +10,9 @@ public partial class ImportSettingsDialog : Window
     public class ImportSettings
     {
         public bool HasHeader { get; set; }
-        public int NameColumn { get; set; }
-        public int NationalIdColumn { get; set; }
-        public int PhoneNumberColumn { get; set; }
+        public int? NameColumn { get; set; }
+        public int? NationalIdColumn { get; set; }
+        public int? PhoneNumberColumn { get; set; }
         public int? InternalIdColumn { get; set; }
         public int? HasCashWalletColumn { get; set; }
         public int? CashWalletNumberColumn { get; set; }
@@ -153,6 +153,21 @@ public partial class ImportSettingsDialog : Window
 
     private void OptionalColumn_Changed(object sender, RoutedEventArgs e)
     {
+        if (NameColumnCheckBox != null && NameColumnComboBox != null)
+        {
+            NameColumnComboBox.IsEnabled = NameColumnCheckBox.IsChecked == true;
+        }
+
+        if (NationalIdColumnCheckBox != null && NationalIdColumnComboBox != null)
+        {
+            NationalIdColumnComboBox.IsEnabled = NationalIdColumnCheckBox.IsChecked == true;
+        }
+
+        if (PhoneNumberColumnCheckBox != null && PhoneNumberColumnComboBox != null)
+        {
+            PhoneNumberColumnComboBox.IsEnabled = PhoneNumberColumnCheckBox.IsChecked == true;
+        }
+
         if (InternalIdColumnCheckBox != null && InternalIdColumnComboBox != null)
         {
             InternalIdColumnComboBox.IsEnabled = InternalIdColumnCheckBox.IsChecked == true;
@@ -176,11 +191,23 @@ public partial class ImportSettingsDialog : Window
 
     private void ImportButton_Click(object sender, RoutedEventArgs e)
     {
-        if (NameColumnComboBox.SelectedIndex == -1 ||
-            NationalIdColumnComboBox.SelectedIndex == -1 ||
-            PhoneNumberColumnComboBox.SelectedIndex == -1)
+        if (NameColumnCheckBox.IsChecked == true && NameColumnComboBox.SelectedIndex == -1)
         {
-            MessageBox.Show("يجب تحديد الأعمدة الإلزامية (الاسم، الرقم القومي، رقم الخط)", "تحذير",
+            MessageBox.Show("يجب تحديد عمود الاسم أو إلغاء تفعيل الخيار", "تحذير",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (NationalIdColumnCheckBox.IsChecked == true && NationalIdColumnComboBox.SelectedIndex == -1)
+        {
+            MessageBox.Show("يجب تحديد عمود الرقم القومي أو إلغاء تفعيل الخيار", "تحذير",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (PhoneNumberColumnCheckBox.IsChecked == true && PhoneNumberColumnComboBox.SelectedIndex == -1)
+        {
+            MessageBox.Show("يجب تحديد عمود رقم الخط أو إلغاء تفعيل الخيار", "تحذير",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -216,19 +243,25 @@ public partial class ImportSettingsDialog : Window
         Settings = new ImportSettings
         {
             HasHeader = HasHeaderCheckBox.IsChecked == true,
-            NameColumn = NameColumnComboBox.SelectedIndex + 1,
-            NationalIdColumn = NationalIdColumnComboBox.SelectedIndex + 1,
-            PhoneNumberColumn = PhoneNumberColumnComboBox.SelectedIndex + 1,
-            InternalIdColumn = InternalIdColumnCheckBox.IsChecked == true 
+            NameColumn = NameColumnCheckBox.IsChecked == true && NameColumnComboBox.SelectedIndex != -1
+                ? NameColumnComboBox.SelectedIndex + 1
+                : null,
+            NationalIdColumn = NationalIdColumnCheckBox.IsChecked == true && NationalIdColumnComboBox.SelectedIndex != -1
+                ? NationalIdColumnComboBox.SelectedIndex + 1
+                : null,
+            PhoneNumberColumn = PhoneNumberColumnCheckBox.IsChecked == true && PhoneNumberColumnComboBox.SelectedIndex != -1
+                ? PhoneNumberColumnComboBox.SelectedIndex + 1
+                : null,
+            InternalIdColumn = InternalIdColumnCheckBox.IsChecked == true && InternalIdColumnComboBox.SelectedIndex != -1
                 ? InternalIdColumnComboBox.SelectedIndex + 1 
                 : null,
-            HasCashWalletColumn = HasCashWalletColumnCheckBox.IsChecked == true 
+            HasCashWalletColumn = HasCashWalletColumnCheckBox.IsChecked == true && HasCashWalletColumnComboBox.SelectedIndex != -1
                 ? HasCashWalletColumnComboBox.SelectedIndex + 1 
                 : null,
-            CashWalletNumberColumn = CashWalletNumberColumnCheckBox.IsChecked == true 
+            CashWalletNumberColumn = CashWalletNumberColumnCheckBox.IsChecked == true && CashWalletNumberColumnComboBox.SelectedIndex != -1
                 ? CashWalletNumberColumnComboBox.SelectedIndex + 1 
                 : null,
-            LineSystemColumn = LineSystemColumnCheckBox.IsChecked == true 
+            LineSystemColumn = LineSystemColumnCheckBox.IsChecked == true && LineSystemColumnComboBox.SelectedIndex != -1
                 ? LineSystemColumnComboBox.SelectedIndex + 1 
                 : null
         };

@@ -29,9 +29,9 @@ public class ImportService
     public class CustomImportSettings
     {
         public bool HasHeader { get; set; }
-        public int NameColumn { get; set; }
-        public int NationalIdColumn { get; set; }
-        public int PhoneNumberColumn { get; set; }
+        public int? NameColumn { get; set; }
+        public int? NationalIdColumn { get; set; }
+        public int? PhoneNumberColumn { get; set; }
         public int? InternalIdColumn { get; set; }
         public int? HasCashWalletColumn { get; set; }
         public int? CashWalletNumberColumn { get; set; }
@@ -153,32 +153,24 @@ public class ImportService
             {
                 try
                 {
-                    var name = worksheet.Cell(row, settings.NameColumn).GetString().Trim();
-                    var nationalId = worksheet.Cell(row, settings.NationalIdColumn).GetString().Trim();
-                    var phoneNumber = worksheet.Cell(row, settings.PhoneNumberColumn).GetString().Trim();
-
-                    if (string.IsNullOrWhiteSpace(name) || 
-                        string.IsNullOrWhiteSpace(nationalId) || 
-                        string.IsNullOrWhiteSpace(phoneNumber))
+                    var name = "";
+                    if (settings.NameColumn.HasValue)
                     {
-                        continue;
+                        name = worksheet.Cell(row, settings.NameColumn.Value).GetString().Trim();
                     }
 
-                    phoneNumber = NormalizePhoneNumber(phoneNumber);
-                    nationalId = NormalizeNationalId(nationalId);
-
-                    if (!IsValidNationalId(nationalId))
+                    var nationalId = "";
+                    if (settings.NationalIdColumn.HasValue)
                     {
-                        result.Errors.Add($"صف {row}: رقم قومي غير صحيح - {nationalId}");
-                        result.FailedCount++;
-                        continue;
+                        nationalId = worksheet.Cell(row, settings.NationalIdColumn.Value).GetString().Trim();
+                        nationalId = NormalizeNationalId(nationalId);
                     }
 
-                    if (!IsValidPhoneNumber(phoneNumber))
+                    var phoneNumber = "";
+                    if (settings.PhoneNumberColumn.HasValue)
                     {
-                        result.Errors.Add($"صف {row}: رقم خط غير صحيح - {phoneNumber}");
-                        result.FailedCount++;
-                        continue;
+                        phoneNumber = worksheet.Cell(row, settings.PhoneNumberColumn.Value).GetString().Trim();
+                        phoneNumber = NormalizePhoneNumber(phoneNumber);
                     }
 
                     var internalId = "";
@@ -212,10 +204,10 @@ public class ImportService
 
                     var phoneLine = new PhoneLine
                     {
-                        Name = name,
-                        NationalId = nationalId,
-                        PhoneNumber = phoneNumber,
-                        InternalId = internalId,
+                        Name = !string.IsNullOrWhiteSpace(name) ? name : "",
+                        NationalId = !string.IsNullOrWhiteSpace(nationalId) ? nationalId : "",
+                        PhoneNumber = !string.IsNullOrWhiteSpace(phoneNumber) ? phoneNumber : "",
+                        InternalId = !string.IsNullOrWhiteSpace(internalId) ? internalId : "",
                         HasCashWallet = hasCashWallet,
                         CashWalletNumber = !string.IsNullOrWhiteSpace(cashWalletNumber) ? cashWalletNumber : null,
                         LineSystem = !string.IsNullOrWhiteSpace(lineSystem) ? lineSystem : null,
