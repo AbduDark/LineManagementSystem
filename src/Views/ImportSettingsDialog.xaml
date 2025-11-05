@@ -1,0 +1,220 @@
+<Window x:Class="LineManagementSystem.Views.ImportSettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="إعدادات استيراد Excel" 
+        Height="650" 
+        Width="550"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        ResizeMode="NoResize"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        FlowDirection="RightToLeft">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="⚙️ إعدادات استيراد ملف Excel" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   Margin="0,0,0,20"
+                   HorizontalAlignment="Center"/>
+
+        <materialDesign:Card Grid.Row="1" 
+                             Padding="15" 
+                             Margin="0,0,0,15"
+                             Background="{DynamicResource PrimaryHueLightBrush}">
+            <StackPanel>
+                <TextBlock Text="📋 حدد محتويات الأعمدة في ملف Excel" 
+                           FontSize="16" 
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           Margin="0,0,0,10"/>
+                <TextBlock Text="قم بتحديد الأعمدة التي تريد استيرادها من ملف Excel" 
+                           FontSize="13"
+                           Foreground="White"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <GroupBox Grid.Row="2" 
+                  Header="معلومات الملف" 
+                  Margin="0,0,0,15"
+                  Padding="10">
+            <StackPanel>
+                <CheckBox x:Name="HasHeaderCheckBox" 
+                          Content="الملف يحتوي على صف عناوين (Headers)" 
+                          IsChecked="True"
+                          Margin="0,5"/>
+                <TextBlock Text="إذا كان الصف الأول يحتوي على عناوين الأعمدة، قم بتفعيل هذا الخيار"
+                           FontSize="11"
+                           Foreground="Gray"
+                           Margin="28,0,0,5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <GroupBox Header="🔢 تحديد الأعمدة المطلوبة (إلزامي)" 
+                          Margin="0,0,0,15"
+                          Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="الأعمدة التالية إلزامية للاستيراد:"
+                                   FontSize="12"
+                                   Margin="0,0,0,10"
+                                   FontWeight="SemiBold"/>
+                        
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" 
+                                      x:Name="NameColumnCheckBox"
+                                      IsChecked="True" 
+                                      IsEnabled="False"
+                                      Margin="0,0,10,0"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="📝 اسم الشخص" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="NameColumnComboBox" 
+                                          Margin="0,5,0,0"
+                                          SelectedIndex="0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" 
+                                      x:Name="NationalIdColumnCheckBox"
+                                      IsChecked="True" 
+                                      IsEnabled="False"
+                                      Margin="0,0,10,0"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="🆔 الرقم القومي (14 رقم)" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="NationalIdColumnComboBox" 
+                                          Margin="0,5,0,0"
+                                          SelectedIndex="1"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" 
+                                      x:Name="PhoneNumberColumnCheckBox"
+                                      IsChecked="True" 
+                                      IsEnabled="False"
+                                      Margin="0,0,10,0"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="📱 رقم الخط (11 رقم)" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="PhoneNumberColumnComboBox" 
+                                          Margin="0,5,0,0"
+                                          SelectedIndex="2"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="➕ أعمدة إضافية (اختياري)" 
+                          Padding="10">
+                    <StackPanel>
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" 
+                                      x:Name="InternalIdColumnCheckBox"
+                                      IsChecked="False"
+                                      Margin="0,0,10,0"
+                                      Checked="OptionalColumn_Changed"
+                                      Unchecked="OptionalColumn_Changed"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="🔖 الرقم الداخلي (ID)" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="InternalIdColumnComboBox" 
+                                          Margin="0,5,0,0"
+                                          SelectedIndex="-1"
+                                          IsEnabled="False"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" 
+                                      x:Name="HasCashWalletColumnCheckBox"
+                                      IsChecked="False"
+                                      Margin="0,0,10,0"
+                                      Checked="OptionalColumn_Changed"
+                                      Unchecked="OptionalColumn_Changed"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="💰 محفظة كاش (نعم/لا)" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="HasCashWalletColumnComboBox" 
+                                          Margin="0,5,0,0"
+                                          SelectedIndex="-1"
+                                          IsEnabled="False"/>
+                                <TextBlock Text="القيم المقبولة: نعم، لا، yes, no, 1, 0"
+                                           FontSize="10"
+                                           Foreground="Gray"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" 
+                                      x:Name="CashWalletNumberColumnCheckBox"
+                                      IsChecked="False"
+                                      Margin="0,0,10,0"
+                                      Checked="OptionalColumn_Changed"
+                                      Unchecked="OptionalColumn_Changed"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="💳 رقم المحفظة" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="CashWalletNumberColumnComboBox" 
+                                          Margin="0,5,0,0"
+                                          SelectedIndex="-1"
+                                          IsEnabled="False"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="4" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,20,0,0">
+            <Button Content="✅ استيراد" 
+                    Width="120" 
+                    Height="40"
+                    Margin="10,0"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Click="ImportButton_Click"/>
+            <Button Content="❌ إلغاء" 
+                    Width="120" 
+                    Height="40"
+                    Margin="10,0"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
