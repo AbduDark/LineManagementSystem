@@ -57,9 +57,36 @@ Preferred communication style: Simple, everyday language.
 - **ClosedXML (0.104.2)**: Excel import/export functionality.
 - **QuestPDF (2025.1.0)**: PDF report generation.
 
+## Replit Environment Status
+
+⚠️ **Important**: This is a Windows-only WPF application that **cannot run on Replit** (Linux environment). However, the project has been successfully imported and builds without errors.
+
+### Development Environment Setup
+- **.NET 8.0 SDK**: Installed and configured
+- **Build Status**: ✅ Builds successfully with 0 errors, 0 warnings
+- **NuGet Packages**: All dependencies restored successfully
+
+### Known Limitations on Replit
+- The application cannot be executed on Replit (requires Windows)
+- LSP errors appear for WPF types (expected on Linux, does not affect build)
+- No workflow/preview available (Windows desktop app)
+
+### To Run This Application
+1. Download the project from Replit
+2. Open on a Windows machine (Windows 10 or newer)
+3. Open in Visual Studio 2022 or VS Code
+4. Run with `dotnet run` or press F5 in Visual Studio
+
 ## Recent Changes (November 2025)
 
-### New Features (Latest - November 5, 2025)
+### Latest Fixes (November 5, 2025 - Replit Import)
+- **MaterialDesign Resource Fix**: Replaced MaterialDesign styles in ImportSettingsDialog.xaml with custom ModernButton styles to match the rest of the application
+  - Removed `materialDesign:Card` component, replaced with standard Border with ModernCard style
+  - Removed MaterialDesign button styles, using ModernButton from Styles.xaml instead
+  - Removed unused MaterialDesign namespace references
+  - Build now succeeds with 0 errors and 0 warnings
+
+### New Features (November 5, 2025)
 - **Line System Field**: Added new "LineSystem" field to PhoneLine model to track line system information
   - Added LineSystem property to PhoneLine model (max 100 characters)
   - Added "نظام الخط" column in GroupDetailsWindow DataGrid
