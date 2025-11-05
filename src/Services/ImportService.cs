@@ -21,6 +21,17 @@ public class ImportService
         public int PhoneNumberColumn { get; set; }
     }
 
+    public class CustomImportSettings
+    {
+        public bool HasHeader { get; set; }
+        public int NameColumn { get; set; }
+        public int NationalIdColumn { get; set; }
+        public int PhoneNumberColumn { get; set; }
+        public int? InternalIdColumn { get; set; }
+        public int? HasCashWalletColumn { get; set; }
+        public int? CashWalletNumberColumn { get; set; }
+    }
+
     public ImportResult ImportFromExcel(string filePath, int groupId)
     {
         var result = new ImportResult();
@@ -93,6 +104,108 @@ public class ImportService
                         NationalId = nationalId,
                         PhoneNumber = phoneNumber,
                         InternalId = internalId,
+                        GroupId = groupId
+                    };
+
+                    result.ImportedLines.Add(phoneLine);
+                    result.SuccessCount++;
+                }
+                catch (Exception ex)
+                {
+                    result.Errors.Add($"صف {row}: {ex.Message}");
+                    result.FailedCount++;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            result.Errors.Add($"خطأ في قراءة الملف: {ex.Message}");
+        }
+
+        return result;
+    }
+
+    public ImportResult ImportFromExcelWithCustomSettings(string filePath, int groupId, CustomImportSettings settings)
+    {
+        var result = new ImportResult();
+
+        try
+        {
+            using var workbook = new XLWorkbook(filePath);
+            var worksheet = workbook.Worksheets.FirstOrDefault();
+
+            if (worksheet == null)
+            {
+                result.Errors.Add("الملف لا يحتوي على أي أوراق عمل");
+                return result;
+            }
+
+            var firstDataRow = settings.HasHeader ? 2 : 1;
+            var lastRow = worksheet.LastRowUsed()?.RowNumber() ?? 0;
+
+            for (int row = firstDataRow; row <= lastRow; row++)
+            {
+                try
+                {
+                    var name = worksheet.Cell(row, settings.NameColumn).GetString().Trim();
+                    var nationalId = worksheet.Cell(row, settings.NationalIdColumn).GetString().Trim();
+                    var phoneNumber = worksheet.Cell(row, settings.PhoneNumberColumn).GetString().Trim();
+
+                    if (string.IsNullOrWhiteSpace(name) || 
+                        string.IsNullOrWhiteSpace(nationalId) || 
+                        string.IsNullOrWhiteSpace(phoneNumber))
+                    {
+                        continue;
+                    }
+
+                    phoneNumber = NormalizePhoneNumber(phoneNumber);
+                    nationalId = NormalizeNationalId(nationalId);
+
+                    if (!IsValidNationalId(nationalId))
+                    {
+                        result.Errors.Add($"صف {row}: رقم قومي غير صحيح - {nationalId}");
+                        result.FailedCount++;
+                        continue;
+                    }
+
+                    if (!IsValidPhoneNumber(phoneNumber))
+                    {
+                        result.Errors.Add($"صف {row}: رقم خط غير صحيح - {phoneNumber}");
+                        result.FailedCount++;
+                        continue;
+                    }
+
+                    var internalId = "";
+                    if (settings.InternalIdColumn.HasValue)
+                    {
+                        internalId = worksheet.Cell(row, settings.InternalIdColumn.Value).GetString().Trim();
+                    }
+                    else
+                    {
+                        internalId = (row - (settings.HasHeader ? 1 : 0)).ToString();
+                    }
+
+                    var hasCashWallet = false;
+                    if (settings.HasCashWalletColumn.HasValue)
+                    {
+                        var walletValue = worksheet.Cell(row, settings.HasCashWalletColumn.Value).GetString().Trim().ToLower();
+                        hasCashWallet = walletValue == "نعم" || walletValue == "yes" || walletValue == "1" || walletValue == "true";
+                    }
+
+                    var cashWalletNumber = "";
+                    if (settings.CashWalletNumberColumn.HasValue)
+                    {
+                        cashWalletNumber = worksheet.Cell(row, settings.CashWalletNumberColumn.Value).GetString().Trim();
+                    }
+
+                    var phoneLine = new PhoneLine
+                    {
+                        Name = name,
+                        NationalId = nationalId,
+                        PhoneNumber = phoneNumber,
+                        InternalId = internalId,
+                        HasCashWallet = hasCashWallet,
+                        CashWalletNumber = !string.IsNullOrWhiteSpace(cashWalletNumber) ? cashWalletNumber : null,
                         GroupId = groupId
                     };
 
