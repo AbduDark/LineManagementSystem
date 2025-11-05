@@ -34,5 +34,38 @@ public class DatabaseContext : DbContext
     public void EnsureCreated()
     {
         Database.EnsureCreated();
+        
+        // Manual migration: Add LineSystem column if it doesn't exist
+        try
+        {
+            using var connection = Database.GetDbConnection();
+            connection.Open();
+            using var command = connection.CreateCommand();
+            
+            // Check if LineSystem column exists
+            command.CommandText = "PRAGMA table_info(PhoneLines)";
+            using var reader = command.ExecuteReader();
+            bool lineSystemExists = false;
+            while (reader.Read())
+            {
+                if (reader.GetString(1) == "LineSystem")
+                {
+                    lineSystemExists = true;
+                    break;
+                }
+            }
+            reader.Close();
+            
+            // Add LineSystem column if it doesn't exist
+            if (!lineSystemExists)
+            {
+                command.CommandText = "ALTER TABLE PhoneLines ADD COLUMN LineSystem TEXT NULL";
+                command.ExecuteNonQuery();
+            }
+        }
+        catch
+        {
+            // If migration fails, ignore (table might not exist yet)
+        }
     }
 }
