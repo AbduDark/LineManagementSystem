@@ -9,6 +9,8 @@
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <AssemblyName>LineManagementSystem</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>src\Resources\Images\Gemini_Generated_Image_nknj9hnknj9hnknj.ico</ApplicationIcon>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +25,25 @@
     <Resource Include="src\Resources\Images\**\*">
       <Link>Resources\Images\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="src\Resources\Images\Gemini_Generated_Image_nknj9hnknj9hnknj.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <Target Name="CopyImagesToOutput" AfterTargets="Build">

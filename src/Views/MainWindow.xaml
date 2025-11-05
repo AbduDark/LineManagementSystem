@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="برنامج احمد السيسي لادارة الموبايل" 
+        Title="برنامج احمد السيسي لادارة الخطوط" 
         Height="800" Width="1400"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
@@ -142,7 +142,7 @@
                     </Button>
                     
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Text="نظام إدارة خطوط الهاتف المحمول" 
+                        <TextBlock Text="لوف يو فيري ماتش يا مصر" 
                                   FontSize="32" 
                                   FontWeight="Bold"
                                   Foreground="{DynamicResource TextPrimary}"
