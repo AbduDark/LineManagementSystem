@@ -100,6 +100,9 @@ public class GroupService
     {
         try
         {
+            // تنظيف الـ tracker قبل الحذف لتجنب أي مشاكل
+            _context.ChangeTracker.Clear();
+            
             // استخدام ExecuteDelete عشان نحذف مباشرة من الداتابيز بدون tracking
             _context.PhoneLines.Where(l => l.Id == lineId).ExecuteDelete();
         }
