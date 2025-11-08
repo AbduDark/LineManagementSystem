@@ -11,6 +11,8 @@ public class GroupDetailsViewModel : BaseViewModel
     private LineGroup _group;
     private PhoneLine? _selectedLine;
     private bool _isAddingLine;
+    private string _searchQuery = string.Empty;
+    private List<PhoneLine> _allLines = new();
 
     public LineGroup Group
     {
@@ -30,6 +32,18 @@ public class GroupDetailsViewModel : BaseViewModel
     {
         get => _isAddingLine;
         set => SetProperty(ref _isAddingLine, value);
+    }
+
+    public string SearchQuery
+    {
+        get => _searchQuery;
+        set
+        {
+            if (SetProperty(ref _searchQuery, value))
+            {
+                FilterLines();
+            }
+        }
     }
 
     public ICommand AddLineCommand { get; }
@@ -167,11 +181,34 @@ public class GroupDetailsViewModel : BaseViewModel
         if (group != null)
         {
             Group = group;
-            Lines.Clear();
-            foreach (var line in group.Lines)
-            {
-                Lines.Add(line);
-            }
+            _allLines = group.Lines.ToList();
+            FilterLines();
+        }
+    }
+
+    private void FilterLines()
+    {
+        Lines.Clear();
+        
+        var filteredLines = _allLines;
+        
+        if (!string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            var query = SearchQuery.Trim().ToLower();
+            filteredLines = _allLines.Where(l =>
+                l.Name.ToLower().Contains(query) ||
+                l.NationalId.ToLower().Contains(query) ||
+                l.PhoneNumber.ToLower().Contains(query) ||
+                l.InternalId.ToLower().Contains(query) ||
+                (l.CashWalletNumber?.ToLower().Contains(query) ?? false) ||
+                (l.LineSystem?.ToLower().Contains(query) ?? false) ||
+                (l.Details?.ToLower().Contains(query) ?? false)
+            ).ToList();
+        }
+        
+        foreach (var line in filteredLines)
+        {
+            Lines.Add(line);
         }
     }
 }

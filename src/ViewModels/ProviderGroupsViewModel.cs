@@ -10,6 +10,8 @@ public class ProviderGroupsViewModel : BaseViewModel
     private readonly GroupService _groupService;
     private TelecomProvider _provider;
     private LineGroup? _selectedGroup;
+    private string _searchQuery = string.Empty;
+    private List<LineGroup> _allGroups = new();
 
     public TelecomProvider Provider
     {
@@ -23,6 +25,18 @@ public class ProviderGroupsViewModel : BaseViewModel
     {
         get => _selectedGroup;
         set => SetProperty(ref _selectedGroup, value);
+    }
+
+    public string SearchQuery
+    {
+        get => _searchQuery;
+        set
+        {
+            if (SetProperty(ref _searchQuery, value))
+            {
+                FilterGroups();
+            }
+        }
     }
 
     public ICommand AddGroupCommand { get; }
@@ -115,9 +129,28 @@ public class ProviderGroupsViewModel : BaseViewModel
 
     public void LoadGroups()
     {
-        var groups = _groupService.GetGroupsByProvider(Provider);
+        _allGroups = _groupService.GetGroupsByProvider(Provider);
+        FilterGroups();
+    }
+
+    private void FilterGroups()
+    {
         Groups.Clear();
-        foreach (var group in groups)
+        
+        var filteredGroups = _allGroups;
+        
+        if (!string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            var query = SearchQuery.Trim().ToLower();
+            filteredGroups = _allGroups.Where(g =>
+                g.Name.ToLower().Contains(query) ||
+                (g.AssignedToEmployee?.ToLower().Contains(query) ?? false) ||
+                (g.AssignedCustomer?.ToLower().Contains(query) ?? false) ||
+                (g.AdditionalDetails?.ToLower().Contains(query) ?? false)
+            ).ToList();
+        }
+        
+        foreach (var group in filteredGroups)
         {
             Groups.Add(group);
         }

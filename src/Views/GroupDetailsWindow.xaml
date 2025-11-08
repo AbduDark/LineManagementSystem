@@ -64,7 +64,7 @@
             <StackPanel>
                 <TextBlock Text="{Binding Group.Name, StringFormat='المجموعة: {0}'}" 
                            FontSize="32" FontWeight="Bold" Foreground="White"/>
-                <TextBlock Text="{Binding Group.GetLineCount, StringFormat='عدد الخطوط: {0} من 50'}" 
+                <TextBlock Text="{Binding Group.GetLineCount, StringFormat='عدد الخطوط: {0}'}" 
                            FontSize="18" Margin="0,5,0,0" Foreground="White" FontWeight="SemiBold"/>
             </StackPanel>
         </Border>
@@ -270,7 +270,31 @@
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="0">
-            <DataGrid ItemsSource="{Binding Lines}"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Padding="15" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🔍 بحث:" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="450"
+                                 Padding="10"
+                                 FontSize="14"
+                                 VerticalAlignment="Center"
+                                 ToolTip="ابحث عن الاسم، الرقم القومي، رقم الخط، ID، رقم المحفظة، نظام الخط، أو التفاصيل"/>
+                        <TextBlock Text="{Binding Lines.Count, StringFormat='النتائج: {0}'}" 
+                                   FontSize="12" 
+                                   FontWeight="SemiBold"
+                                   Foreground="#2196F3"
+                                   VerticalAlignment="Center" 
+                                   Margin="15,0,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <DataGrid Grid.Row="1" ItemsSource="{Binding Lines}"
                       SelectedItem="{Binding SelectedLine}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
@@ -378,7 +402,8 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                 </DataGrid.Columns>
-            </DataGrid>
+                </DataGrid>
+            </Grid>
         </Border>
     </Grid>
 </Window>
