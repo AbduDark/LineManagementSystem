@@ -111,11 +111,41 @@
                         </Button.Template>
                     </Button>
 
+                    <Button Content="📊 لوحة المعلومات" 
+                            DockPanel.Dock="Right"
+                            Click="DashboardButton_Click"
+                            Padding="25,15"
+                            Margin="20,0,10,0"
+                            Background="#9C27B0"
+                            Foreground="White"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" 
+                                        CornerRadius="12"
+                                        Padding="{TemplateBinding Padding}">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="Black" Opacity="0.2" BlurRadius="10" ShadowDepth="3"/>
+                                    </Border.Effect>
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="0.9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
                     <Button Content="⚙️ الإعدادات" 
                             DockPanel.Dock="Right"
                             Click="SettingsButton_Click"
                             Padding="25,15"
-                            Margin="20,0,0,0"
+                            Margin="10,0,0,0"
                             Background="#607D8B"
                             Foreground="White"
                             FontSize="18"

@@ -54,6 +54,12 @@ public partial class MainWindow : Window
         OnNavigateToProvider(TelecomProvider.Orange);
     }
 
+    private void DashboardButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dashboardWindow = new DashboardWindow(_groupService, _alertService);
+        dashboardWindow.Show();
+    }
+
     private void SearchButton_Click(object sender, RoutedEventArgs e)
     {
         var searchWindow = new SearchWindow(_groupService, _alertService);
