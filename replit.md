@@ -53,3 +53,12 @@ Preferred communication style: Simple, everyday language.
 - **MaterialDesignThemes (5.0.0)**: Material Design UI components.
 - **ClosedXML (0.104.2)**: Excel import/export functionality.
 - **QuestPDF (2025.1.0)**: PDF report generation.
+- **LiveChartsCore.SkiaSharpView.WPF (2.0.0-rc4.5)**: Charts and data visualization for dashboard.
+
+## Recent Changes (November 9, 2025)
+- Successfully imported project to Replit environment
+- Installed .NET 8.0 toolchain and all required NuGet packages
+- Added missing LiveChartsCore.SkiaSharpView.WPF package dependency
+- Fixed GroupStatus enum reference (changed `Blocked` to `Barred` in DashboardViewModel)
+- Build validation workflow configured and passing successfully
+- Note: This is a Windows WPF application and cannot run directly on Replit's Linux environment. The project is set up for code editing, building, and development work only.

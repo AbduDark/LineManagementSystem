@@ -155,7 +155,7 @@ public class DashboardViewModel : BaseViewModel
         {
             allGroups.Count(g => g.Status == GroupStatus.Active),
             allGroups.Count(g => g.Status == GroupStatus.Suspended),
-            allGroups.Count(g => g.Status == GroupStatus.Blocked)
+            allGroups.Count(g => g.Status == GroupStatus.Barred)
         };
 
         StatusSeries = new ISeries[]
