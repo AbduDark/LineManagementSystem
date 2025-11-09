@@ -11,6 +11,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ApplicationIcon>src\Resources\Images\Gemini_Generated_Image_nknj9hnknj9hnknj.ico</ApplicationIcon>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <NoWarn>NU1701;NU1603</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +20,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
     <PackageReference Include="QuestPDF" Version="2025.1.0" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc4" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc4.5" />
   </ItemGroup>
 
   <ItemGroup>
