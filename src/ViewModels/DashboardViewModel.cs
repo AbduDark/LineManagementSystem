@@ -1,261 +1,262 @@
 
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
 using LineManagementSystem.Models;
 using LineManagementSystem.Services;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace LineManagementSystem.ViewModels;
 
-public class DashboardViewModel : INotifyPropertyChanged
+public class DashboardViewModel : BaseViewModel
 {
-    private readonly DatabaseContext _dbContext;
+    private readonly GroupService _groupService;
     private readonly AlertService _alertService;
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
+    // Statistics Properties
     private int _totalGroups;
     public int TotalGroups
     {
         get => _totalGroups;
-        set
-        {
-            _totalGroups = value;
-            OnPropertyChanged();
-        }
+        set => SetProperty(ref _totalGroups, value);
     }
 
     private int _totalLines;
     public int TotalLines
     {
         get => _totalLines;
-        set
-        {
-            _totalLines = value;
-            OnPropertyChanged();
-        }
+        set => SetProperty(ref _totalLines, value);
     }
 
     private int _activeGroups;
     public int ActiveGroups
     {
         get => _activeGroups;
-        set
-        {
-            _activeGroups = value;
-            OnPropertyChanged();
-        }
+        set => SetProperty(ref _activeGroups, value);
     }
 
-    private int _renewalAlerts;
-    public int RenewalAlerts
+    private int _pendingAlerts;
+    public int PendingAlerts
     {
-        get => _renewalAlerts;
-        set
-        {
-            _renewalAlerts = value;
-            OnPropertyChanged();
-        }
+        get => _pendingAlerts;
+        set => SetProperty(ref _pendingAlerts, value);
     }
 
-    private PlotModel? _providerDistributionPlot;
-    public PlotModel? ProviderDistributionPlot
+    private DateTime _lastUpdateTime;
+    public DateTime LastUpdateTime
     {
-        get => _providerDistributionPlot;
-        set
-        {
-            _providerDistributionPlot = value;
-            OnPropertyChanged();
-        }
+        get => _lastUpdateTime;
+        set => SetProperty(ref _lastUpdateTime, value);
     }
 
-    private PlotModel? _statusDistributionPlot;
-    public PlotModel? StatusDistributionPlot
+    // Chart Series
+    private IEnumerable<ISeries> _providerSeries = Array.Empty<ISeries>();
+    public IEnumerable<ISeries> ProviderSeries
     {
-        get => _statusDistributionPlot;
-        set
-        {
-            _statusDistributionPlot = value;
-            OnPropertyChanged();
-        }
+        get => _providerSeries;
+        set => SetProperty(ref _providerSeries, value);
     }
 
-    private PlotModel? _renewalTimelinePlot;
-    public PlotModel? RenewalTimelinePlot
+    private IEnumerable<ISeries> _statusSeries = Array.Empty<ISeries>();
+    public IEnumerable<ISeries> StatusSeries
     {
-        get => _renewalTimelinePlot;
-        set
-        {
-            _renewalTimelinePlot = value;
-            OnPropertyChanged();
-        }
+        get => _statusSeries;
+        set => SetProperty(ref _statusSeries, value);
     }
 
-    public DashboardViewModel(DatabaseContext dbContext, AlertService alertService)
+    private IEnumerable<ISeries> _walletSeries = Array.Empty<ISeries>();
+    public IEnumerable<ISeries> WalletSeries
     {
-        _dbContext = dbContext;
+        get => _walletSeries;
+        set => SetProperty(ref _walletSeries, value);
+    }
+
+    private IEnumerable<ISeries> _renewalSeries = Array.Empty<ISeries>();
+    public IEnumerable<ISeries> RenewalSeries
+    {
+        get => _renewalSeries;
+        set => SetProperty(ref _renewalSeries, value);
+    }
+
+    public Axis[] XAxes { get; set; }
+    public Axis[] MonthXAxes { get; set; }
+
+    public DashboardViewModel(GroupService groupService, AlertService alertService)
+    {
+        _groupService = groupService;
         _alertService = alertService;
-        LoadData();
-    }
 
-    private void LoadData()
-    {
-        TotalGroups = _dbContext.LineGroups.Count();
-        TotalLines = _dbContext.PhoneLines.Count();
-        ActiveGroups = _dbContext.LineGroups.Count(g => g.Status == GroupStatus.Active);
-        RenewalAlerts = _alertService.GetActiveAlerts().Count;
-
-        CreateProviderDistributionChart();
-        CreateStatusDistributionChart();
-        CreateRenewalTimelineChart();
-    }
-
-    private void CreateProviderDistributionChart()
-    {
-        var plotModel = new PlotModel { Title = "" };
-
-        var pieSeries = new PieSeries
+        XAxes = new[]
         {
-            StrokeThickness = 2.0,
-            InsideLabelPosition = 0.5,
-            AngleSpan = 360,
-            StartAngle = 0
+            new Axis
+            {
+                Labels = new[] { "نشط", "معلق", "محظور" },
+                LabelsRotation = 0,
+                TextSize = 16,
+                LabelsPaint = new SolidColorPaint(SKColors.Gray)
+            }
         };
 
-        var providerGroups = _dbContext.LineGroups
+        MonthXAxes = new[]
+        {
+            new Axis
+            {
+                Labels = GetNext6Months(),
+                LabelsRotation = 15,
+                TextSize = 14,
+                LabelsPaint = new SolidColorPaint(SKColors.Gray)
+            }
+        };
+
+        LoadDashboardData();
+    }
+
+    private void LoadDashboardData()
+    {
+        // Get all groups
+        var allGroups = new List<LineGroup>();
+        allGroups.AddRange(_groupService.GetGroupsByProvider(TelecomProvider.Vodafone));
+        allGroups.AddRange(_groupService.GetGroupsByProvider(TelecomProvider.Etisalat));
+        allGroups.AddRange(_groupService.GetGroupsByProvider(TelecomProvider.We));
+        allGroups.AddRange(_groupService.GetGroupsByProvider(TelecomProvider.Orange));
+
+        // Calculate statistics
+        TotalGroups = allGroups.Count;
+        TotalLines = allGroups.Sum(g => g.GetLineCount);
+        ActiveGroups = allGroups.Count(g => g.Status == GroupStatus.Active);
+        PendingAlerts = _alertService.ActiveAlerts.Count;
+        LastUpdateTime = DateTime.Now;
+
+        // Provider Distribution
+        var providerData = allGroups
             .GroupBy(g => g.Provider)
-            .Select(g => new { Provider = g.Key, Count = g.Count() })
-            .ToList();
-
-        foreach (var group in providerGroups)
-        {
-            var color = GetProviderColor(group.Provider);
-            pieSeries.Slices.Add(new PieSlice(group.Provider.GetArabicName(), group.Count)
+            .Select(g => new
             {
-                Fill = OxyColor.Parse(color)
-            });
-        }
-
-        plotModel.Series.Add(pieSeries);
-        ProviderDistributionPlot = plotModel;
-    }
-
-    private void CreateStatusDistributionChart()
-    {
-        var plotModel = new PlotModel { Title = "" };
-
-        var pieSeries = new PieSeries
-        {
-            StrokeThickness = 2.0,
-            InsideLabelPosition = 0.5,
-            AngleSpan = 360,
-            StartAngle = 0
-        };
-
-        var statusGroups = _dbContext.LineGroups
-            .GroupBy(g => g.Status)
-            .Select(g => new { Status = g.Key, Count = g.Count() })
+                Provider = g.Key,
+                Count = g.Count()
+            })
             .ToList();
 
-        foreach (var group in statusGroups)
+        ProviderSeries = providerData.Select(p => new PieSeries<int>
         {
-            var color = GetStatusColor(group.Status);
-            pieSeries.Slices.Add(new PieSlice(group.Status.GetArabicName(), group.Count)
+            Values = new[] { p.Count },
+            Name = p.Provider.GetArabicName(),
+            DataLabelsPaint = new SolidColorPaint(SKColors.White),
+            DataLabelsSize = 16,
+            DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+            Fill = new SolidColorPaint(SKColor.Parse(p.Provider.GetColorHex()))
+        }).ToArray();
+
+        // Status Distribution
+        var statusCounts = new[]
+        {
+            allGroups.Count(g => g.Status == GroupStatus.Active),
+            allGroups.Count(g => g.Status == GroupStatus.Suspended),
+            allGroups.Count(g => g.Status == GroupStatus.Blocked)
+        };
+
+        StatusSeries = new ISeries[]
+        {
+            new ColumnSeries<int>
             {
-                Fill = OxyColor.Parse(color)
-            });
+                Values = statusCounts,
+                Fill = new SolidColorPaint(SKColor.Parse("#4CAF50")),
+                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                DataLabelsSize = 16,
+                DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Top
+            }
+        };
+
+        // Wallet Distribution
+        var allLines = allGroups.SelectMany(g => g.Lines).ToList();
+        var withWallet = allLines.Count(l => l.HasCashWallet);
+        var withoutWallet = allLines.Count - withWallet;
+
+        WalletSeries = new ISeries[]
+        {
+            new PieSeries<int>
+            {
+                Values = new[] { withWallet },
+                Name = "بمحفظة نقدية",
+                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsSize = 16,
+                Fill = new SolidColorPaint(SKColor.Parse("#4CAF50"))
+            },
+            new PieSeries<int>
+            {
+                Values = new[] { withoutWallet },
+                Name = "بدون محفظة",
+                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsSize = 16,
+                Fill = new SolidColorPaint(SKColor.Parse("#F44336"))
+            }
+        };
+
+        // Monthly Renewals
+        var renewalCounts = GetMonthlyRenewalCounts(allGroups);
+        RenewalSeries = new ISeries[]
+        {
+            new ColumnSeries<int>
+            {
+                Values = renewalCounts,
+                Fill = new SolidColorPaint(SKColor.Parse("#2196F3")),
+                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                DataLabelsSize = 14,
+                DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Top
+            }
+        };
+    }
+
+    private string[] GetNext6Months()
+    {
+        var months = new List<string>();
+        for (int i = 0; i < 6; i++)
+        {
+            var date = DateTime.Now.AddMonths(i);
+            months.Add($"{GetArabicMonth(date.Month)}\n{date.Year}");
+        }
+        return months.ToArray();
+    }
+
+    private string GetArabicMonth(int month)
+    {
+        return month switch
+        {
+            1 => "يناير",
+            2 => "فبراير",
+            3 => "مارس",
+            4 => "أبريل",
+            5 => "مايو",
+            6 => "يونيو",
+            7 => "يوليو",
+            8 => "أغسطس",
+            9 => "سبتمبر",
+            10 => "أكتوبر",
+            11 => "نوفمبر",
+            12 => "ديسمبر",
+            _ => ""
+        };
+    }
+
+    private int[] GetMonthlyRenewalCounts(List<LineGroup> groups)
+    {
+        var counts = new int[6];
+        var today = DateTime.Now;
+
+        for (int i = 0; i < 6; i++)
+        {
+            var monthStart = new DateTime(today.Year, today.Month, 1).AddMonths(i);
+            var monthEnd = monthStart.AddMonths(1).AddDays(-1);
+
+            counts[i] = groups.Count(g =>
+                g.NextRenewalDue.HasValue &&
+                g.NextRenewalDue.Value >= monthStart &&
+                g.NextRenewalDue.Value <= monthEnd);
         }
 
-        plotModel.Series.Add(pieSeries);
-        StatusDistributionPlot = plotModel;
-    }
-
-    private void CreateRenewalTimelineChart()
-    {
-        var plotModel = new PlotModel { Title = "" };
-
-        var dateAxis = new DateTimeAxis
-        {
-            Position = AxisPosition.Bottom,
-            StringFormat = "dd/MM",
-            Title = "التاريخ",
-            MajorGridlineStyle = LineStyle.Solid,
-            MinorGridlineStyle = LineStyle.Dot
-        };
-
-        var valueAxis = new LinearAxis
-        {
-            Position = AxisPosition.Left,
-            Title = "عدد المجموعات",
-            MajorGridlineStyle = LineStyle.Solid,
-            MinorGridlineStyle = LineStyle.Dot
-        };
-
-        plotModel.Axes.Add(dateAxis);
-        plotModel.Axes.Add(valueAxis);
-
-        var today = DateTime.Today;
-        var renewalGroups = _dbContext.LineGroups
-            .Where(g => g.RenewalDate.HasValue && g.RenewalDate.Value <= today.AddDays(30))
-            .OrderBy(g => g.RenewalDate)
-            .ToList();
-
-        var lineSeries = new LineSeries
-        {
-            Title = "مجموعات التجديد",
-            MarkerType = MarkerType.Circle,
-            Color = OxyColors.OrangeRed,
-            MarkerSize = 5,
-            MarkerStroke = OxyColors.White,
-            MarkerStrokeThickness = 1.5
-        };
-
-        var groupedByDate = renewalGroups
-            .GroupBy(g => g.RenewalDate!.Value.Date)
-            .Select(g => new { Date = g.Key, Count = g.Count() })
-            .OrderBy(g => g.Date)
-            .ToList();
-
-        foreach (var point in groupedByDate)
-        {
-            lineSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(point.Date), point.Count));
-        }
-
-        plotModel.Series.Add(lineSeries);
-        RenewalTimelinePlot = plotModel;
-    }
-
-    private string GetProviderColor(TelecomProvider provider)
-    {
-        return provider switch
-        {
-            TelecomProvider.Vodafone => "#E60000",
-            TelecomProvider.Etisalat => "#007E3A",
-            TelecomProvider.We => "#60269E",
-            TelecomProvider.Orange => "#FF7900",
-            _ => "#000000"
-        };
-    }
-
-    private string GetStatusColor(GroupStatus status)
-    {
-        return status switch
-        {
-            GroupStatus.Active => "#4CAF50",
-            GroupStatus.Suspended => "#FFC107",
-            GroupStatus.Barred => "#F44336",
-            GroupStatus.Cashless => "#9E9E9E",
-            GroupStatus.CashWallet => "#2196F3",
-            _ => "#000000"
-        };
+        return counts;
     }
 }

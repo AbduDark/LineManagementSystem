@@ -7,9 +7,17 @@ namespace LineManagementSystem.Views;
 
 public partial class DashboardWindow : Window
 {
-    public DashboardWindow(DatabaseContext dbContext, AlertService alertService)
+    private readonly DashboardViewModel _viewModel;
+
+    public DashboardWindow(GroupService groupService, AlertService alertService)
     {
         InitializeComponent();
-        DataContext = new DashboardViewModel(dbContext, alertService);
+        _viewModel = new DashboardViewModel(groupService, alertService);
+        DataContext = _viewModel;
+    }
+
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
     }
 }
