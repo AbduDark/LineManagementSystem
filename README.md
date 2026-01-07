@@ -1,5 +1,5 @@
 # نظام إدارة خطوط الهاتف المحمول
-## Line Management System for Telecom Providers
+## Line Management System for Telecom Providers to make easy management
 
 تطبيق سطح مكتب متكامل لإدارة خطوط الهاتف المحمول للشركات المصرية (فودافون، اتصالات، وي، أورانج).
 
